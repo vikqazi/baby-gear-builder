@@ -1,0 +1,566 @@
+﻿<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build your baby gear like you'd spec a car - stroller platform first, then options filtered by real click-in compatibility. Researched picks, prices, and official photos.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127868;</text></svg>">
+<title>Baby Gear Builder</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&family=Spline+Sans+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  color-scheme: light only;
+  --ground:#FBF9F5; --panel:#FFFFFF; --ink:#3A3733; --ink-2:#7C756B; --line:#EAE4D9;
+  --accent:#77906F; --accent-soft:#EDF1E7; --vik:#68829E; --vik-soft:#E9EEF3;
+  --gold:#A98B62; --gold-soft:#F4EEE2; --warn:#B98B5E; --warn-soft:#F7EFE2;
+  --chip:#F1ECE3; --dis:#F2EEE6;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); font:15.5px/1.6 "Nunito Sans",system-ui,sans-serif; margin:0; padding:0 18px 80px;}
+.wrap{max-width:1180px; margin:0 auto;}
+a{color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px;}
+a:focus-visible,button:focus-visible,.opt:focus-visible{outline:2px solid var(--vik); outline-offset:2px;}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif; text-wrap:balance; margin:0; font-weight:600;}
+header{padding:38px 0 20px;}
+.eyebrow{font-family:"Spline Sans Mono",monospace; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2);}
+h1{font-size:clamp(28px,4.5vw,42px); letter-spacing:-.01em; margin:8px 0 10px;}
+.lede{color:var(--ink-2); max-width:66ch; margin:0;}
+.intro{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:24px 26px; margin-bottom:26px;}
+.intro h2{font-size:20px; color:var(--ink); margin-bottom:4px;}
+.intro .sub{color:var(--ink-2); font-size:14px; margin:0 0 16px;}
+.six{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px 18px; margin:0; padding:0; list-style:none; counter-reset:six;}
+.six li{counter-increment:six; display:flex; gap:11px; font-size:13.5px; align-items:baseline;}
+.six li::before{content:counter(six,decimal-leading-zero); font-family:"Spline Sans Mono",monospace; font-size:11px; color:var(--accent); font-weight:600; flex:none;}
+.six b{display:block; font-size:14.5px;}
+.six span{color:var(--ink-2);}
+.eco-flow{display:flex; flex-wrap:wrap; align-items:center; gap:7px 6px; font-size:13px; margin-top:18px; padding-top:16px; border-top:1px solid var(--line);}
+.eco-flow .node{background:var(--accent-soft); color:var(--ink); border-radius:8px; padding:5px 10px; font-weight:600; white-space:nowrap;}
+.eco-flow .arr{color:var(--ink-2); font-family:"Spline Sans Mono",monospace; font-size:12px;}
+.layout{display:grid; grid-template-columns:minmax(0,1fr) 330px; gap:22px; align-items:start;}
+.mbar{display:none; position:fixed; left:0; right:0; bottom:0; z-index:41; background:var(--panel); border-top:1px solid var(--line); padding:10px 16px calc(10px + env(safe-area-inset-bottom)); justify-content:space-between; align-items:center; gap:12px; box-shadow:0 -4px 18px rgba(0,0,0,.06);}
+.mbar .mt{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:18px;}
+.mbar .mt small{display:block; font:600 10px "Spline Sans Mono",monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2);}
+.mbar button{font:600 14px "Nunito Sans",sans-serif; padding:10px 18px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer;}
+@media (max-width:920px){
+  .layout{grid-template-columns:1fr;}
+  body{padding-bottom:110px;}
+  .steps{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity; padding-bottom:6px; margin-left:-18px; margin-right:-18px; padding-left:18px; padding-right:18px;}
+  .step{flex:0 0 auto; min-width:116px; scroll-snap-align:start;}
+  .mbar{display:flex;}
+  .summary{display:none; position:fixed; left:10px; right:10px; bottom:calc(64px + env(safe-area-inset-bottom)); top:auto; max-height:62vh; overflow-y:auto; z-index:40; box-shadow:0 14px 44px rgba(0,0,0,.18);}
+  .summary.open{display:block;}
+  .opt{padding:14px;}
+  .sw{width:26px; height:26px;}
+  h1{font-size:30px;}
+  .intro{padding:18px;}
+}
+
+section{margin:0 0 34px;}
+.sec-head{display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:16px; flex-wrap:wrap;}
+.sec-head .n{font-family:"Spline Sans Mono",monospace; font-weight:500; font-size:12px; color:var(--accent);}
+.sec-head h2{font-size:22px;}
+.sec-head .hint{margin-left:auto; font-size:12.5px; color:var(--ink-2);}
+.opts{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px;}
+.opt{background:var(--panel); border:1.5px solid var(--line); border-radius:16px; padding:15px 16px 13px; cursor:pointer; display:flex; flex-direction:column; gap:7px; transition:border-color .15s, box-shadow .15s;}
+.opt:hover{border-color:var(--accent);}
+.opt.sel{border-color:var(--accent); box-shadow:0 0 0 1.5px var(--accent), 0 4px 14px rgba(0,0,0,.05); background:var(--accent-soft);}
+.opt.dis{background:var(--dis); cursor:not-allowed; opacity:.62;}
+.opt .top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+.opt h3{font-size:16px; font-weight:700; line-height:1.25;}
+.opt .price{font-family:"Spline Sans Mono",monospace; font-weight:600; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;}
+.badges{display:flex; flex-wrap:wrap; gap:5px;}
+.b{font-family:"Spline Sans Mono",monospace; font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:2.5px 8px; border-radius:99px;}
+.b.tech{background:var(--vik-soft); color:var(--vik);}
+.b.value{background:var(--gold-soft); color:var(--gold);}
+.b.rev{background:var(--accent-soft); color:var(--accent);}
+.b.warn{background:var(--warn-soft); color:var(--warn);}
+.opt p{margin:0; font-size:13px; color:var(--ink-2);}
+.opt .compat{font-size:12px; font-weight:600;}
+.compat.ok{color:var(--accent);} .compat.no{color:var(--warn);}
+.swatches{display:flex; gap:7px; flex-wrap:wrap; padding-top:2px;}
+.sw{width:22px; height:22px; border-radius:50%; border:2px solid var(--line); cursor:pointer; padding:0;}
+.sw.sel{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent);}
+.sw:disabled{cursor:not-allowed;}
+.swname{font-size:11.5px; color:var(--ink-2); font-family:"Spline Sans Mono",monospace;}
+.pic{position:relative; height:150px; border-radius:11px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, var(--tint, var(--accent-soft)) 0%, var(--chip) 100%); margin:-3px -3px 2px; overflow:hidden;}
+.pic svg{width:58px; height:58px; color:var(--ink); opacity:.72;}
+.pic img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#FFFFFF; padding:8px; box-sizing:border-box;}
+.pic .credit{position:absolute; right:6px; bottom:5px; font:600 9px "Spline Sans Mono",monospace; letter-spacing:.05em; color:#8A857D; background:rgba(255,255,255,.82); border-radius:5px; padding:2px 6px; pointer-events:none;}
+.media{display:flex; gap:8px; margin-top:2px;}
+.media a{flex:1; text-align:center; font:600 12px "Nunito Sans",sans-serif; color:var(--ink); background:var(--chip); border:1px solid var(--line); border-radius:9px; padding:7px 8px; text-decoration:none; white-space:nowrap;}
+.media a:hover{border-color:var(--accent); color:var(--accent);}
+.linkrow{font-size:12.5px; display:flex; gap:10px; flex-wrap:wrap; margin-top:auto; padding-top:6px; border-top:1px solid var(--line);}
+.toggle{display:flex; align-items:flex-start; gap:10px; background:var(--chip); border:1px solid var(--line); border-radius:12px; padding:11px 13px; margin-bottom:14px; font-size:13px; text-align:left;}
+.toggle input{width:17px; height:17px; accent-color:var(--accent); margin-top:1px; flex:none;}
+
+.steps{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; padding:0;}
+.step{font-family:"Nunito Sans",sans-serif; text-align:left; background:var(--panel); border:1.5px solid var(--line); border-radius:12px; padding:9px 14px; cursor:pointer; min-width:118px; flex:1;}
+.step .sn{font-family:"Spline Sans Mono",monospace; font-size:10px; color:var(--ink-2); letter-spacing:.08em; display:block;}
+.step .sl{font-weight:700; font-size:13.5px; color:var(--ink); display:block;}
+.step .sv{font-size:11.5px; color:var(--accent); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px;}
+.step.active{border-color:var(--accent); background:var(--accent-soft);}
+.step:hover{border-color:var(--accent);}
+.navbtns{display:flex; justify-content:space-between; gap:10px; margin-top:18px;}
+.navbtns button{font:600 14px "Nunito Sans",sans-serif; padding:10px 22px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--ink); cursor:pointer;}
+.navbtns button.next{background:var(--accent); border-color:var(--accent); color:#fff;}
+.navbtns button:disabled{opacity:.4; cursor:default;}
+
+.summary{position:sticky; top:14px; background:var(--panel); border:1px solid var(--line); border-radius:15px; padding:18px;}
+.summary h2{font-size:18px; color:var(--accent); margin-bottom:12px;}
+.srow{display:flex; justify-content:space-between; gap:10px; font-size:13.5px; padding:6px 0; border-bottom:1px solid var(--line);}
+.srow .lbl{color:var(--ink-2); font-size:11px; font-family:"Spline Sans Mono",monospace; letter-spacing:.07em; text-transform:uppercase; display:block;}
+.srow .val{font-weight:600;}
+.srow .p{font-family:"Spline Sans Mono",monospace; font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums;}
+.total{display:flex; justify-content:space-between; align-items:baseline; padding-top:12px; font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:20px;}
+.total small{font-size:11px; color:var(--ink-2); font-family:"Nunito Sans",sans-serif; font-weight:400;}
+.checks{margin:12px 0 0; padding:0; list-style:none; font-size:12.5px; display:flex; flex-direction:column; gap:5px;}
+.checks li.ok{color:var(--accent);} .checks li.no{color:var(--warn);}
+.sbtns{display:flex; gap:8px; margin-top:14px;}
+.sbtns button{flex:1; font:600 13px "Nunito Sans",sans-serif; padding:10px; border-radius:10px; border:1px solid var(--line); background:var(--chip); color:var(--ink); cursor:pointer;}
+.sbtns button.primary{background:var(--accent); border-color:var(--accent); color:var(--panel);}
+#copyout{width:100%; margin-top:10px; font:12px "Spline Sans Mono",monospace; background:var(--chip); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px;}
+footer{border-top:1px solid var(--line); margin-top:26px; padding-top:16px; font-size:12.5px; color:var(--ink-2);}
+footer a{color:var(--ink-2);}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">travel system + nursery configurator Â· researched Sept 2026</div>
+  <h1>Baby Gear Builder</h1>
+  <p class="lede">Spec your baby gear the way you'd build a car: pick a stroller platform, then options filter by <strong>real click-in compatibility</strong>. Badges mark the gadget pick, the value pick, and the 2026 reviews pick in each category. Prices are approximate street prices â€” confirm at checkout.</p>
+</header>
+
+<div class="intro">
+  <h2>The ten that actually matter</h2>
+  <p class="sub">Registries drown you in 80 items. These ten carry the whole first year â€” and because several have to physically click into each other, choosing them <em>as a system</em> beats choosing them one at a time.</p>
+  <ul class="six">
+    <li><div><b>Stroller platform</b><span>Pick first â€” its adapter list decides which car seats you can even consider.</span></div></li>
+    <li><div><b>Infant car seat</b><span>The one item you always buy new. Must click into the stroller, and needs a base per car.</span></div></li>
+    <li><div><b>Bedside bassinet</b><span>Where baby sleeps months 0â€“5, within arm's reach. Separate from the stroller's bassinet.</span></div></li>
+    <li><div><b>Monitor</b><span>Camera, vitals, or both â€” decide as a pair, not separately, so it all lives in one app.</span></div></li>
+    <li><div><b>Crib + breathable mattress</b><span>Takes over from the bassinet at ~4â€“6 months. The mattress matters more than the frame.</span></div></li>
+    <li><div><b>Breast pump</b><span>Insurance usually covers the main one free â€” sequence this, don't shop it.</span></div></li>
+    <li><div><b>Bottles & feeding</b><span>Start with 4â€“6 bottles of one anti-colic system â€” they should fit your washer and pump.</span></div></li>
+    <li><div><b>Glider</b><span>The 3am chair. You'll spend more waking hours here than anywhere else in month one.</span></div></li>
+    <li><div><b>Sleep environment</b><span>Sound machine, humidifier, blackout â€” the cheap trio that buys you sleep.</span></div></li>
+    <li><div><b>Carrier & diaper bag</b><span>Hands back. A good carrier replaces the stroller half the time.</span></div></li>
+  </ul>
+  <div class="eco-flow" aria-label="How the system connects">
+    <span class="node">Car seat</span><span class="arr">clicks into</span><span class="node">Stroller</span>
+    <span class="arr">Â·</span>
+    <span class="node">Base Ã—2</span><span class="arr">one per car</span>
+    <span class="arr">Â·</span>
+    <span class="node">Vitals sock</span><span class="arr">pairs with</span><span class="node">Camera</span><span class="arr">one app</span>
+    <span class="arr">Â·</span>
+    <span class="node">Bassinet</span><span class="arr">hands off to</span><span class="node">Crib</span><span class="arr">at ~5 mo</span>
+    <span class="arr">Â·</span>
+    <span class="node">Bottles</span><span class="arr">fit</span><span class="node">Washer + pump</span>
+  </div>
+</div>
+
+<div class="layout">
+<main>
+  <nav class="steps" id="steps" aria-label="Build steps"></nav>
+
+  <section id="sec-stroller"></section>
+  <section id="sec-seat"></section>
+  <section id="sec-bassinet"></section>
+  <section id="sec-monitor"></section>
+  <section id="sec-crib"></section>
+  <section id="sec-pump"></section>
+  <section id="sec-feeding"></section>
+  <section id="sec-glider"></section>
+  <section id="sec-environment"></section>
+  <section id="sec-carry"></section>
+</main>
+
+<aside class="summary" id="summary" aria-live="polite"></aside>
+</div>
+
+<div class="mbar" id="mbar">
+  <span class="mt"><small>Your build Â· approx.</small><span id="mbar-total">$0</span></span>
+  <button id="mbtn" aria-expanded="false">View build</button>
+</div>
+
+<footer>
+  Compatibility from manufacturer adapter lists (Bugaboo, Nuna, UPPAbaby, Mockingbird) â€” verify before purchase; adapters and colorways change by model year. Research: <a href="https://www.consumerreports.org/babies-kids/car-seats/best-infant-car-seats-of-the-year-a7088444370/" target="_blank" rel="noopener">Consumer Reports</a> Â· <a href="https://www.thebump.com/a/best-infant-car-seats" target="_blank" rel="noopener">The Bump</a> Â· <a href="https://www.babygearlab.com/topics/health-safety/best-video-monitor" target="_blank" rel="noopener">BabyGearLab</a> Â· <a href="https://mommyhood101.com/best-baby-cribs" target="_blank" rel="noopener">Mommyhood101</a> Â· <a href="https://fathercraft.com/baby-monitor-reviews/" target="_blank" rel="noopener">Fathercraft</a> Â· <a href="https://www.bambibaby.com/blogs/learning-center/new-2026-bugaboo-dragonfly-plus-city-stroller-review-comparison" target="_blank" rel="noopener">Bambi Baby</a>. Infant car seats: always buy new, never secondhand. Not affiliated with any brand.
+</footer>
+</div>
+
+<script>
+const DATA = {
+stroller: [
+ {id:'dfplus', name:'Bugaboo Dragonfly Plus', price:1049, badges:[['tech','Gadget pick'],['rev','Reviews pick']],
+  why:'21.8 lb-class, one-hand fold in ANY configuration (bassinet on!), self-standing, gate-check OK. 2026: longer seat, bigger UPF 50+ canopy, locking urban wheels.',
+  adapters:['nuna','cybex','maxicosi','clek'], adapterCost:0, adapterNote:'car-seat adapter included in box',
+  bassinet:{name:'Dragonfly bassinet', price:250},
+  colors:[['Midnight Black','#1a1a1e'],['Grey Melange','#9a9aa0'],['Forest Green','#2e4636'],['Desert Taupe','#b0a08c'],['Seaside Blue','#7fa8b8']],
+  links:[['Bugaboo','https://www.bugaboo.com/us-en/strollers/bugaboo-dragonfly/'],['Strolleria','https://strolleria.com/collections/infant-car-seats-compatible-with-bugaboo-dragonfly']]},
+ {id:'df', name:'Bugaboo Dragonfly (original)', price:949, badges:[['value','Value pick'],['rev','Reviews pick']],
+  why:'Same frame, fold and weight as the Plus, minus the 2026 trim upgrades. Watch for model-changeover discounts â€” under ~$800 it is the value buy of the class.',
+  adapters:['nuna','cybex','maxicosi','clek'], adapterCost:0, adapterNote:'car-seat adapter included in box',
+  bassinet:{name:'Dragonfly bassinet', price:250},
+  colors:[['Midnight Black','#1a1a1e'],['Grey Melange','#9a9aa0'],['Forest Green','#2e4636'],['Desert Taupe','#b0a08c']],
+  links:[['Bugaboo','https://www.bugaboo.com/us-en/strollers/bugaboo-dragonfly/bugaboo-dragonfly-2-in-1-stroller-PM006447.html'],['Albee Baby','https://www.albeebaby.com/collections/bugaboo-dragonfly-strollers']]},
+ {id:'triv', name:'Nuna TRIV lx', price:800, badges:[['tech','Gadget pick']],
+  why:'Magnetic harness, near-flat newborn recline, one-hand fold. Nuna Pipa seats click into the ring with zero adapters â€” the tightest single-brand pairing.',
+  adapters:['nuna','maxicosi','cybex'], adapterCost:0, adapterNote:'Pipa clicks in adapter-free (ring system)',
+  bassinet:{name:'TRIV bassinet (lytl)', price:300},
+  colors:[['Caviar','#17181c'],['Cedar','#6b4a3a'],['Biscotti','#d8cdb9'],['Granite','#5c5e63']],
+  links:[['Nuna','https://nunababy.com/'],['Strolleria','https://strolleria.com/']]},
+ {id:'vista', name:'UPPAbaby Vista V3', price:999, badges:[['rev','Reviews pick'],['warn','~27 lb']],
+  why:'The full-size luxury benchmark: huge basket, expands to a double for kid #2. Trade-off: heaviest here, bulkier fold â€” fails a â‰¤25 lb / travel-first spec.',
+  adapters:['uppababy','nuna','cybex','maxicosi'], adapterCost:60, adapterNote:'Mesa native; Nuna/Cybex/Maxi-Cosi adapter ~$60',
+  bassinet:{name:'Vista bassinet', price:0, note:'included'},
+  colors:[['Jake Black','#1b1b1d'],['Greyson Grey','#77787c'],['Noa Navy','#2a3d5c']],
+  links:[['UPPAbaby','https://uppababy.com/'],['Strolleria','https://strolleria.com/blogs/news/best-strollers']]},
+ {id:'mock', name:'Mockingbird Single-to-Double 3.0', price:450, badges:[['value','Value pick'],['warn','26.5 lb']],
+  why:'Luxury features at half the price; converts to a double; pairs with ~40 car seat models including Chicco. Trade-off: over 25 lb and less travel-friendly.',
+  adapters:['chicco','nuna','cybex','maxicosi','clek','uppababy'], adapterCost:25, adapterNote:'adapter ~$25, fits ~40 seat models',
+  bassinet:{name:'Mockingbird bassinet', price:145},
+  colors:[['Black','#1c1c1c'],['Sage','#9aa88f'],['Bluebird','#6f8fae']],
+  links:[['Mockingbird','https://hellomockingbird.com/'],['The Bump vs Vista','https://www.thebump.com/a/mockingbird-vs-uppababy-vista-review']]}
+],
+seat: [
+ {id:'pipaaire', name:'Nuna Pipa aire rx', brand:'nuna', price:450, base2:200, badges:[['tech','Gadget pick'],['rev','Reviews pick']],
+  why:'Lightest premium carrier, stability load leg + anti-rebound base, 2026 side-impact certified, merino inserts.',
+  colors:[['Caviar','#17181c'],['Biscotti','#d8cdb9'],['Cedar','#6b4a3a'],['Granite','#5c5e63']],
+  links:[['Nuna','https://nunababy.com/'],['Compatibility','https://www.babycubby.com/pages/nuna-pipa-aire-pipa-aire-rx-compatibility']]},
+ {id:'cloudg', name:'Cybex Cloud G Lux', brand:'cybex', price:400, base2:180, badges:[['tech','Gadget pick']],
+  why:'Full-recline lie-flat on the stroller (rare), load leg, SensorSafe chest-clip alerts available.',
+  colors:[['Moon Black','#1d1d20'],['Lava Grey','#6e6f73'],['Seashell Beige','#cfc3b1']],
+  links:[['Cybex','https://cybex-online.com/']]},
+ {id:'mico', name:'Maxi-Cosi Mico Luxe', brand:'maxicosi', price:250, base2:150, badges:[['value','Value pick']],
+  why:'The value seat that still clicks natively into Bugaboo/Nuna adapters. No load leg on the standard base.',
+  colors:[['Midnight Glow','#23252c'],['Stone Glow','#a9a49b']],
+  links:[['Target','https://www.target.com/s?searchTerm=maxi+cosi+mico+luxe']]},
+ {id:'keyfit', name:'Chicco KeyFit Max', brand:'chicco', price:230, base2:120, badges:[['rev','Reviews pick'],['value','Value pick']],
+  why:'The Bump best mid-price 2026, easiest correct install in class, anti-rebound bar. Limited stroller ecosystem â€” no Bugaboo adapter exists.',
+  colors:[['Black','#1b1b1b'],['Slate','#5b6068']],
+  links:[['The Bump tests','https://www.thebump.com/a/best-infant-car-seats']]},
+ {id:'mesa', name:'UPPAbaby Mesa V2', brand:'uppababy', price:350, base2:170, badges:[['rev','Reviews pick']],
+  why:'Native click into the Vista/Cruz with zero adapters; visual SmartSecure install indicator.',
+  colors:[['Jake Black','#1b1b1d'],['Greyson Grey','#77787c']],
+  links:[['UPPAbaby','https://uppababy.com/']]}
+],
+bassinet: [
+ {id:'halo', name:'Halo BassiNest 4.0', price:300, badges:[['rev','Reviews pick']],
+  why:'The Bump best overall 2026: 360Â° swivel + push-down wall â€” feed without sitting up. Nightlight, sounds, feeding timer.',
+  links:[['The Bump tests','https://www.thebump.com/a/best-bassinets'],['Halo','https://halosleep.com/']]},
+ {id:'newton', name:'Newton Bassinet & Bedside Sleeper', price:299, badges:[['value','Value pick']],
+  why:'Breathable mesh everywhere, converts to bedside-sleeper mode, best-looking of the non-smart field.',
+  links:[['Newton','https://www.newtonbaby.com/']]},
+ {id:'snoo', name:'SNOO Smart Sleeper (rental)', price:960, priceNote:'~$160/mo Ã— ~6 mo', badges:[['tech','Gadget pick']],
+  why:'Detects crying, auto-responds with graduated rocking + white noise, app sleep logs. Rent â€” babies age out by ~6 months.',
+  links:[['Happiest Baby rental','https://www.happiestbaby.com/products/snoo-rental']]},
+ {id:'snuz', name:'SnuzPod 5 (walnut)', price:299, badges:[['value','Value pick']],
+  why:'The style pick: real wood bedside bassinet with drop wall and incline for reflux. 4.5â˜… (The Bump tested).',
+  links:[['SnÃ¼z','https://snuz.co.uk/']]}
+],
+monitor: [
+ {id:'sight', name:'Owlet Dream Sight', price:170, badges:[['tech','Gadget pick']],
+  why:'Pairs with the Owlet Dream Sock to form the Dream Duo â€” the only FDA-cleared pulse-ox system with video + vitals in one app.',
+  links:[['Owlet','https://owletcare.com/']]},
+ {id:'eufy', name:'Eufy E21 4K', price:260, badges:[['value','Value pick']],
+  why:'Sharpest picture tested, every feature included, $0/month forever. No vitals integration.',
+  links:[['Fathercraft tests','https://fathercraft.com/baby-monitor-reviews/']]},
+ {id:'nanit', name:'Nanit Pro', price:289, priceNote:'+ $10â€“15/mo', badges:[['rev','Reviews pick'],['warn','subscription']],
+  why:'Tops most 2026 lists for sleep analytics â€” but the analytics live behind a subscription reviewers price at $420â€“780 over two years.',
+  links:[['BabyGearLab','https://www.babygearlab.com/topics/health-safety/best-video-monitor']]},
+ {id:'dxr', name:'Infant Optics DXR-8 Pro', price:200, badges:[['value','Value pick']],
+  why:'No wifi, no app, no cloud â€” a dedicated handheld unit that works through walls. The privacy-first pick.',
+  links:[['Fathercraft tests','https://fathercraft.com/baby-monitor-reviews/']]}
+],
+crib: [
+ {id:'hudson', name:'Babyletto Hudson 3-in-1 + Newton mattress', price:650, badges:[['rev','Reviews pick'],['value','Value pick']],
+  why:'Consensus mid-price crib (solid wood, GREENGUARD Gold, toddler rail included) + the mattress that led 2026 airflow testing.',
+  links:[['Babyletto','https://babyletto.com/'],['CR crib tests','https://www.consumerreports.org/babies-kids/cribs/best-cribs-of-the-year-a1108411107/']]},
+ {id:'nestig', name:'Nestig Cloud + Newton mattress', price:1050, badges:[['tech','Design splurge']],
+  why:'The design-forward crib â€” converts mini â†’ full â†’ toddler. Pay for the look; the safety testing is equal.',
+  links:[['Nestig','https://nestig.com/'],['Hudson vs Cloud','https://tinylog.app/guides/babyletto-hudson-vs-nestig-cloud-crib']]},
+ {id:'ikea', name:'IKEA Sniglar + Naturepedic mattress', price:390, badges:[['value','Value pick']],
+  why:'The honest budget build: IKEAâ€™s solid-beech crib passes the same safety standard; spend the savings on an organic Naturepedic mattress.',
+  links:[['IKEA','https://www.ikea.com/us/en/cat/cribs-16053/'],['Mattress tests','https://mommyhood101.com/best-crib-mattress']]}
+],
+pump: [
+ {id:'spectra', name:'Spectra S1 Plus â€” via insurance', price:0, priceNote:'$0 if covered ($190 retail)', badges:[['rev','Reviews pick'],['value','Value pick']],
+  why:'#1 overall 2026: hospital-strength, quiet, rechargeable. ACA requires most plans to cover a pump â€” check eligibility BEFORE buying anything.',
+  links:[['Babylist Health check','https://www.babylist.com/health'],['BabyGearLab','https://www.babygearlab.com/topics/nursing-feeding/best-breast-pump']]},
+ {id:'elvie', name:'Elvie Stride (wearable add-on)', price:200, badges:[['tech','Gadget pick']],
+  why:'In-bra, silent, app-connected, with real suction â€” the mobility pump as a second unit. Ranked over Willow Go (leak reports).',
+  links:[['Elvie','https://www.elvie.com/'],['Wearable rankings','https://www.1naturalway.com/blog/best-wearable-breast-pumps']]},
+ {id:'haakaa', name:'Haakaa + storage set', price:30, badges:[['value','Value pick']],
+  why:'The $15 silicone catch on every "weirdly essential" list, plus Lansinoh storage bottles. Highest value-per-dollar in feeding.',
+  links:[['Target','https://www.target.com/s?searchTerm=haakaa']]}
+],
+feeding: [
+ {id:'drbrowns', name:"Dr. Brown's Anti-Colic Options+ gift set", price:100, badges:[['rev','Reviews pick']],
+  why:'The consensus anti-colic system; glass versions available. Start here, keep one alternative brand on hand in case baby disagrees.',
+  links:[['Dr. Brown\'s','https://www.drbrownsbaby.com/']]},
+ {id:'lansinoh', name:'Lansinoh Anti-Colic bottles (4-pack)', price:19, badges:[['value','Value pick']],
+  why:'4.7â˜… (454) â€” the budget anti-colic set whose NaturalWave nipples pair naturally with a Lansinoh/Spectra pumping setup.',
+  links:[['Lansinoh','https://lansinoh.com/']]},
+ {id:'brezza', name:'Baby Brezza Formula Pro Advanced', price:195, badges:[['tech','Gadget pick']],
+  why:'The Keurig of formula â€” dispenses a mixed, warmed bottle in seconds. 4.7â˜… (41.7k). Only worth it if formula is in the plan.',
+  links:[['Baby Brezza','https://babybrezza.com/']]},
+ {id:'sterilizer', name:'Bottle washer-sterilizer-dryer', price:300, badges:[['tech','Gadget pick']],
+  why:'Momcozy KleanPal Pro or Baby Brezza Bottle Washer Pro (4.5â˜…, 7.1k) â€” one machine takes bottle chores off the counter entirely.',
+  links:[['Baby Brezza','https://babybrezza.com/'],['Momcozy','https://momcozy.com/']]}
+],
+glider: [
+ {id:'davinci', name:'DaVinci Olive glider + ottoman', price:500, badges:[['rev','Reviews pick']],
+  why:'GREENGUARD Gold, water-repellent upholstery, smooth quiet glide â€” the mid-price consensus for the 3am chair.',
+  links:[['DaVinci','https://www.davincibaby.com/']]},
+ {id:'delta', name:'Delta Children upholstered glider', price:260, badges:[['value','Value pick']],
+  why:'Does the one job â€” quiet glide, decent lumbar â€” at half the price. Put the savings into the mattress.',
+  links:[['Target','https://www.target.com/s?searchTerm=delta+children+glider']]},
+ {id:'kiwi', name:'Babyletto Kiwi power recliner', price:999, badges:[['tech','Gadget pick'],['warn','3.7â˜… mixed']],
+  why:'Electronic recline + USB port, one-hand operation with a baby on your chest. Reviews are mixed (3.7â˜…/76) â€” try before buying.',
+  links:[['Babyletto','https://babyletto.com/']]}
+],
+environment: [
+ {id:'hatch', name:'Hatch Rest (2nd gen)', price:70, badges:[['tech','Gadget pick'],['rev','Reviews pick']],
+  why:'Sound machine + night light + toddler wake clock later, all app-controlled. The default answer for a reason.',
+  links:[['Hatch','https://www.hatch.co/']]},
+ {id:'humid', name:'Levoit smart humidifier', price:90, badges:[['tech','Gadget pick']],
+  why:'Dry winter air + newborn congestion is a rough combo; app-schedulable, auto-humidity target.',
+  links:[['Levoit','https://levoit.com/']]},
+ {id:'blackout', name:'Blackout curtains', price:35, badges:[['value','Value pick']],
+  why:'The highest ROI sleep purchase in the room. Any brand; go darker than you think.',
+  links:[['Target','https://www.target.com/s?searchTerm=blackout+curtains+nursery']]},
+ {id:'sleepsacks', name:'Swaddles + sleep sacks (starter set)', price:80, badges:[['rev','Reviews pick']],
+  why:'Halo SleepSack swaddles (velcro > blankets at 3am), then zip sacks once rolling starts. 3â€“4 of each size.',
+  links:[['Halo','https://halosleep.com/']]}
+],
+carry: [
+ {id:'ergo', name:'Ergobaby Omni Breeze', price:200, badges:[['rev','Reviews pick']],
+  why:'The consensus all-position carrier, newborn to toddler, breathable mesh â€” no infant insert needed.',
+  links:[['Ergobaby','https://ergobaby.com/']]},
+ {id:'bjorn', name:'BabyBjÃ¶rn Baby Carrier Mini', price:120, badges:[['value','Value pick']],
+  why:'4.7â˜… (648) â€” the simple newborn-months carrier that takes 10 seconds to put on. Many households run Mini now + Ergo later.',
+  links:[['BabyBjÃ¶rn','https://www.babybjorn.com/']]},
+ {id:'wildbird', name:'WildBird Aerial ring sling', price:228, badges:[['warn','style pick']],
+  why:'4.8â˜… (1.6k) â€” the stylish sling for around-the-house contact naps. A complement, not a replacement.',
+  links:[['WildBird','https://wildbird.co/']]},
+ {id:'bag', name:'Diaper bag backpack', price:85, badges:[['value','Value pick']],
+  why:'Skip Hop or Ruvalino backpack style â€” both hands free, wipeable lining, stroller clips that hook your platform\'s handlebar.',
+  links:[['Skip Hop','https://www.skiphop.com/']]}
+]
+};
+/* Official product photos, hot-linked from each brand's own servers (og:image/social-preview
+   assets published for off-site embedding). If one fails to load, the card falls back to the
+   illustrated tile automatically. */
+const PHOTOS={};
+const ICONS={
+stroller:'<circle cx="30" cy="78" r="10"/><circle cx="72" cy="78" r="10"/><path d="M20 30 Q20 58 44 58 L64 58 L64 34 Q64 26 56 26 L38 26"/><path d="M64 34 L84 14"/><path d="M30 68 L38 58 M72 68 L64 58"/>',
+seat:'<path d="M24 70 Q16 70 16 58 Q16 30 40 24 Q70 18 76 40 L80 58 Q82 70 70 70 Z"/><path d="M34 22 Q50 4 68 22"/><path d="M28 48 Q48 56 68 46"/>',
+bassinet:'<path d="M16 40 L84 40 Q84 64 50 64 Q16 64 16 40 Z"/><path d="M16 40 Q30 28 50 28 Q70 28 84 40"/><path d="M30 64 L24 84 M70 64 L76 84"/>',
+monitor:'<rect x="22" y="24" width="56" height="46" rx="12"/><circle cx="50" cy="47" r="12"/><circle cx="50" cy="47" r="4"/><path d="M38 78 L62 78"/>',
+crib:'<path d="M16 26 L16 78 M84 26 L84 78"/><path d="M16 40 L84 40 M16 66 L84 66"/><path d="M30 40 L30 66 M43 40 L43 66 M57 40 L57 66 M70 40 L70 66"/>',
+pump:'<rect x="20" y="34" width="34" height="40" rx="8"/><circle cx="37" cy="52" r="8"/><path d="M62 40 L62 68 Q62 76 70 76 L72 76 Q80 76 80 68 L80 48 L74 40 L68 40 Z"/><path d="M54 46 L62 46"/>',
+feeding:'<path d="M40 30 L60 30 L62 44 Q66 52 66 62 L66 76 Q66 84 58 84 L42 84 Q34 84 34 76 L34 62 Q34 52 38 44 Z"/><path d="M44 14 Q50 8 56 14 L56 30 L44 30 Z"/><path d="M34 62 L66 62"/>',
+glider:'<path d="M28 24 Q22 24 22 32 L22 58 L64 58 L64 50 Q64 44 58 44 L36 44 L36 32 Q36 24 28 24 Z"/><path d="M22 58 L22 70 L72 70 L72 58"/><path d="M18 78 Q50 90 82 78"/>',
+environment:'<path d="M60 20 Q42 26 42 46 Q42 66 60 72 Q48 78 36 70 Q20 60 24 42 Q28 26 46 20 Q53 18 60 20 Z"/><path d="M68 34 L78 34 L70 44 L80 44" stroke-width="4"/>',
+carry:'<path d="M34 30 Q34 16 50 16 Q66 16 66 30 L66 40"/><path d="M30 40 Q50 30 70 40 L66 78 Q50 86 34 78 Z"/><path d="M40 46 Q50 54 60 46"/>'};
+const CATS = [
+ ['stroller','01','Stroller platform','pick this first â€” it sets compatibility', false],
+ ['seat','02','Infant car seat','filtered by your stroller Â· buy new only', false],
+ ['bassinet','03','Bedside bassinet','months 0â€“5 Â· independent of platform', false],
+ ['monitor','04','Monitor','', false],
+ ['crib','05','Crib + mattress','moves in at ~4â€“6 months', false],
+ ['pump','06','Breast pump','multi-select â€” these stack', true],
+ ['feeding','07','Bottles & feeding','multi-select â€” these stack', true],
+ ['glider','08','Glider','the 3am chair', false],
+ ['environment','09','Sleep environment','multi-select â€” the cheap sleep trio', true],
+ ['carry','10','Carrier & bag','multi-select â€” many run two carriers', true]
+];
+const MULTI = CATS.filter(c=>c[4]).map(c=>c[0]);
+let state = {stroller:'dfplus', seat:'pipaaire', bassinet:'halo', monitor:'sight', crib:'hudson',
+  pump:['spectra','elvie','haakaa'], feeding:['drbrowns'], glider:'davinci',
+  environment:['hatch','blackout','sleepsacks'], carry:['ergo','bag'],
+  colors:{stroller:'Midnight Black', seat:'Caviar'},
+  addBassinet:true, twocar:true};
+try{ const s=localStorage.getItem('bgb-build'); if(s) state=Object.assign(state,JSON.parse(s)); }catch(e){}
+let step=0;
+
+const $=id=>document.getElementById(id);
+const fmt=n=>'$'+n.toLocaleString();
+const stroller=()=>DATA.stroller.find(s=>s.id===state.stroller);
+const seatOK=st=>seat=>st? (st.adapters.includes(seat.brand)) : true;
+
+function save(){ try{localStorage.setItem('bgb-build',JSON.stringify(state));}catch(e){} }
+
+function optCard(cat,o,multi){
+  const st=stroller();
+  let dis=false, compat='';
+  if(cat==='seat'){
+    const ok=st && st.adapters.includes(o.brand);
+    dis=!ok;
+    compat = ok
+      ? `<span class="compat ok">âœ“ clicks into ${st.name.split(' ').slice(0,2).join(' ')} â€” ${st.adapterCost? 'adapter ~'+fmt(st.adapterCost) : st.adapterNote}</span>`
+      : `<span class="compat no">âœ— no adapter for ${st?st.name.split(' ').slice(0,2).join(' '):'this stroller'} â€” carried separately forever</span>`;
+  }
+  const selected = multi? state[cat].includes(o.id) : state[cat]===o.id;
+  const badges=o.badges.map(b=>`<span class="b ${b[0]}">${b[1]}</span>`).join('');
+  const links=o.links.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('');
+  const curColor = o.colors ? (o.colors.find(c=>c[0]===state.colors[cat]&&selected) || o.colors[0]) : null;
+  const tint = curColor ? curColor[1]+'2E' : '';
+  const ph = PHOTOS[o.id];
+  const brandHost = (()=>{ try{return new URL(o.links[0][1]).hostname.replace('www.','');}catch(e){return '';} })();
+  const pic = `<div class="pic" ${tint?`style="--tint:${tint}"`:''}><svg aria-hidden="true" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${ICONS[cat]||''}</svg>${ph?`<img src="${ph}" alt="${o.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.nextElementSibling&&this.nextElementSibling.remove();this.remove()"><span class="credit">photo: ${brandHost}</span>`:''}</div>`;
+  const vq=encodeURIComponent(o.name.replace(/\(.*?\)/g,'').trim()+' official video');
+  const media=`<div class="media">
+    <a href="${o.links[0][1]}" target="_blank" rel="noopener" aria-label="Official photos of ${o.name}">ðŸ“· Official photos</a>
+    <a href="https://www.youtube.com/results?search_query=${vq}" target="_blank" rel="noopener" aria-label="Videos of ${o.name}">â–¶ Videos</a>
+  </div>`;
+  let swatches='';
+  if(o.colors){
+    const cur=state.colors[cat];
+    swatches=`<div class="swatches" role="group" aria-label="${o.name} colors">`+o.colors.map(c=>
+      `<button class="sw ${cur===c[0]&&selected?'sel':''}" style="background:${c[1]}" title="${c[0]}" aria-label="${c[0]}" ${dis?'disabled':''} data-cat="${cat}" data-id="${o.id}" data-color="${c[0]}"></button>`).join('')
+      +`</div><span class="swname">${selected&&cur? cur : 'colorways'}</span>`;
+  }
+  return `<div class="opt ${selected?'sel':''} ${dis?'dis':''}" tabindex="${dis?-1:0}" role="button" aria-pressed="${selected}" data-cat="${cat}" data-id="${o.id}" ${dis?'aria-disabled="true"':''}>
+    ${pic}
+    <div class="top"><h3>${o.name}</h3><span class="price">${o.priceNote||fmt(o.price)}</span></div>
+    <div class="badges">${badges}</div>
+    ${compat}
+    <p>${o.why}</p>
+    ${swatches}
+    ${media}
+    <div class="linkrow">${links}</div>
+  </div>`;
+}
+
+function selName(cat){
+  if(MULTI.includes(cat)) return state[cat].length? state[cat].length+' selected' : 'â€”';
+  const o=DATA[cat].find(x=>x.id===state[cat]);
+  return o? o.name.split(' ').slice(0,3).join(' ') : 'â€”';
+}
+const SHORT={stroller:'Stroller', seat:'Car seat', bassinet:'Bassinet', monitor:'Monitor', crib:'Crib', pump:'Pump', feeding:'Feeding', glider:'Glider', environment:'Sleep env.', carry:'Carrier'};
+function renderSteps(){
+  $('steps').innerHTML=CATS.map((c,i)=>
+    `<button class="step ${i===step?'active':''}" data-step="${i}" aria-current="${i===step}">
+      <span class="sn">step ${c[1]}</span><span class="sl">${SHORT[c[0]]}</span>
+      <span class="sv">${selName(c[0])}</span></button>`).join('');
+  document.querySelectorAll('.step').forEach(b=>b.onclick=()=>{step=+b.dataset.step; renderAll();});
+}
+function renderSection(cat,n,title,hint,multi){
+  const idx=CATS.findIndex(c=>c[0]===cat);
+  const el=$('sec-'+cat);
+  el.hidden = idx!==step;
+  if(el.hidden){ el.innerHTML=''; return; }
+  let extra='';
+  if(cat==='stroller'){
+    const st=stroller();
+    if(st&&st.bassinet){
+      const inc=st.bassinet.note==='included';
+      extra=`<label class="toggle" style="margin:12px 0 0"><input type="checkbox" id="addbass" ${state.addBassinet||inc?'checked':''} ${inc?'disabled':''}>
+      <span><strong>Add the ${st.bassinet.name}</strong> â€” ${inc?'included with this stroller':'flat overnight-nap surface for walks (~'+fmt(st.bassinet.price)+'); the bedroom bassinet (step 03) is still separate'}</span></label>`;
+    }
+  }
+  el.innerHTML=`<div class="sec-head"><span class="n">${n}</span><h2>${title}</h2><span class="hint">${hint}</span></div>
+  <div class="opts">${DATA[cat].map(o=>optCard(cat,o,multi)).join('')}</div>${extra}
+  <div class="navbtns">
+    <button id="backbtn" ${step===0?'disabled':''}>â† Back</button>
+    <button class="next" id="nextbtn">${step===CATS.length-1?'Review build â†“':'Next: '+CATS[Math.min(step+1,CATS.length-1)][2].split('â€”')[0].trim()+' â†’'}</button>
+  </div>`;
+  const bb=$('backbtn'), nb=$('nextbtn');
+  if(bb) bb.onclick=()=>{ if(step>0){step--; renderAll(); window.scrollTo({top:0});} };
+  if(nb) nb.onclick=()=>{ if(step<CATS.length-1){step++; renderAll(); window.scrollTo({top:0});}
+    else if(getComputedStyle($('mbar')).display!=='none'){ if(!$('summary').classList.contains('open')) $('mbtn').click(); }
+    else {$('summary').scrollIntoView({behavior:'smooth'});} };
+}
+
+function computeBuild(){
+  const st=stroller(); const items=[]; let total=0; const checks=[];
+  const push=(lbl,name,price,note)=>{items.push({lbl,name,price,note}); total+=price;};
+  if(st){
+    push('Stroller', st.name+(state.colors.stroller?' Â· '+state.colors.stroller:''), st.price);
+    if(st.bassinet && (state.addBassinet||st.bassinet.note==='included') && st.bassinet.price) push('Stroller bassinet', st.bassinet.name, st.bassinet.price);
+  }
+  const seat=DATA.seat.find(s=>s.id===state.seat);
+  if(seat){
+    const ok=st&&st.adapters.includes(seat.brand);
+    push('Car seat', seat.name+(state.colors.seat?' Â· '+state.colors.seat:''), seat.price);
+    if(ok&&st.adapterCost) push('Adapter', st.name.split(' ')[0]+' adapter', st.adapterCost);
+    if(state.twocar) push('2nd base', seat.name.split(' ')[0]+' base â€” car #2', seat.base2);
+    checks.push(ok? {ok:1,t:`âœ“ ${seat.name.split(' ').slice(0,3).join(' ')} clicks into the ${st.name.split(' ').slice(0,2).join(' ')}`}
+                  : {ok:0,t:`âœ— ${seat.name} will NOT attach to the ${st?st.name:'stroller'} â€” pick a compatible pair`});
+  }
+  const bas=DATA.bassinet.find(b=>b.id===state.bassinet);
+  if(bas) push('Bassinet', bas.name, bas.price, bas.priceNote);
+  const mon=DATA.monitor.find(m=>m.id===state.monitor);
+  if(mon){ push('Monitor', mon.name, mon.price, mon.priceNote);
+    if(mon.id==='sight') checks.push({ok:1,t:'âœ“ Dream Sight + Owlet Dream Sock = Dream Duo (vitals + video, one app)'});
+    if(mon.id==='nanit') checks.push({ok:0,t:'â–³ Nanit analytics need a $10â€“15/mo subscription'});
+  }
+  const crib=DATA.crib.find(c=>c.id===state.crib);
+  if(crib) push('Crib + mattress', crib.name, crib.price);
+  state.pump.forEach(id=>{const p=DATA.pump.find(x=>x.id===id); if(p) push('Pump', p.name, p.price, p.priceNote);});
+  state.feeding.forEach(id=>{const p=DATA.feeding.find(x=>x.id===id); if(p) push('Feeding', p.name, p.price, p.priceNote);});
+  const gl=DATA.glider.find(g=>g.id===state.glider);
+  if(gl) push('Glider', gl.name, gl.price);
+  state.environment.forEach(id=>{const p=DATA.environment.find(x=>x.id===id); if(p) push('Sleep env.', p.name, p.price);});
+  state.carry.forEach(id=>{const p=DATA.carry.find(x=>x.id===id); if(p) push('On-the-go', p.name, p.price);});
+  if(state.feeding.includes('drbrowns')&&state.feeding.includes('sterilizer')) checks.push({ok:1,t:'âœ“ Dr. Brown\'s bottles fit both washer-sterilizers'});
+  if(state.pump.includes('spectra')) checks.push({ok:1,t:'âœ“ Run the insurance pump check before paying â€” Spectra S1 is commonly $0'});
+  if(st&&(st.id==='dfplus'||st.id==='df')) checks.push({ok:1,t:'âœ“ One-hand fold works with bassinet attached Â· gate-check approved for flights'});
+  if(st&&st.id==='vista') checks.push({ok:0,t:'â–³ Vista is ~27 lb with a bulkier fold â€” strong at home, weak for travel'});
+  if(st&&st.id==='mock') checks.push({ok:0,t:'â–³ Mockingbird is 26.5 lb â€” over a 25 lb travel cap'});
+  return {items,total,checks};
+}
+
+function renderSummary(){
+  const {items,total,checks}=computeBuild();
+  $('summary').innerHTML=`<h2>Your build</h2>
+  <label class="toggle"><input type="checkbox" id="twocar" ${state.twocar?'checked':''}> <span><strong>Two-car household</strong> â€” adds a second car-seat base</span></label>
+  ${items.map(i=>`<div class="srow"><div><span class="lbl">${i.lbl}</span><span class="val">${i.name}</span></div><span class="p">${i.note||fmt(i.price)}</span></div>`).join('')}
+  <div class="total"><span>Total <small>approx.</small></span><span>${fmt(total)}</span></div>
+  <ul class="checks">${checks.map(c=>`<li class="${c.ok?'ok':'no'}">${c.t}</li>`).join('')}</ul>
+  <div class="sbtns"><button class="primary" id="copybtn">Copy build list</button><button id="resetbtn">Reset</button></div>
+  <textarea id="copyout" rows="6" hidden readonly></textarea>`;
+  $('copybtn').onclick=()=>{
+    const txt='MY BABY GEAR BUILD\n'+items.map(i=>`â€¢ ${i.lbl}: ${i.name} â€” ${i.note||fmt(i.price)}`).join('\n')+`\nTotal (approx): ${fmt(total)}\nBuilt with Baby Gear Builder`;
+    const out=$('copyout'); out.value=txt; out.hidden=false; out.select();
+    try{ navigator.clipboard.writeText(txt).then(()=>{$('copybtn').textContent='Copied âœ“'; setTimeout(()=>$('copybtn').textContent='Copy build list',1500);}); }catch(e){}
+  };
+  $('resetbtn').onclick=()=>{ try{localStorage.removeItem('bgb-build');}catch(e){} location.reload(); };
+  $('twocar').onchange=e=>{state.twocar=e.target.checked; save(); renderSummary();};
+  const mt=$('mbar-total'); if(mt) mt.textContent=fmt(total);
+}
+
+function renderAll(){ renderSteps(); CATS.forEach(c=>renderSection(...c)); renderSummary();
+  const ab=$('addbass'); if(ab&&!ab.disabled) ab.onchange=e=>{state.addBassinet=e.target.checked; save(); renderSummary();};
+}
+
+document.addEventListener('click',e=>{
+  const sw=e.target.closest('.sw');
+  if(sw&&!sw.disabled){ const cat=sw.dataset.cat;
+    if((cat==='stroller'||cat==='seat')){ state[cat]=sw.dataset.id; state.colors[cat]=sw.dataset.color; save(); renderAll(); }
+    e.stopPropagation(); return;
+  }
+  const opt=e.target.closest('.opt');
+  if(opt && !opt.classList.contains('dis') && !e.target.closest('a')){
+    const cat=opt.dataset.cat, id=opt.dataset.id;
+    if(MULTI.includes(cat)){ const i=state[cat].indexOf(id); i>=0? state[cat].splice(i,1) : state[cat].push(id); }
+    else{ state[cat]=id;
+      if(DATA[cat].find(o=>o.id===id).colors && !state.colors[cat]) state.colors[cat]=DATA[cat].find(o=>o.id===id).colors[0][0];
+      if(cat==='stroller'){ const seat=DATA.seat.find(s=>s.id===state.seat);
+        if(seat && !DATA.stroller.find(s=>s.id===id).adapters.includes(seat.brand)){
+          const first=DATA.seat.find(seatOK(DATA.stroller.find(s=>s.id===id)));
+          if(first){ state.seat=first.id; state.colors.seat=first.colors?first.colors[0][0]:undefined; }
+        } }
+    }
+    save(); renderAll();
+  }
+});
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('opt')){ e.preventDefault(); e.target.click(); }});
+$('mbtn').onclick=()=>{
+  const s=$('summary'), open=s.classList.toggle('open');
+  $('mbtn').textContent=open?'Close':'View build';
+  $('mbtn').setAttribute('aria-expanded',open);
+};
+renderAll();
+</script>
+
