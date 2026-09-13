@@ -85,6 +85,12 @@ section{margin:0 0 34px;}
 .pic svg{width:58px; height:58px; color:var(--ink); opacity:.72;}
 .pic img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#FFFFFF; padding:8px; box-sizing:border-box;}
 .pic .credit{position:absolute; right:6px; bottom:5px; font:600 9px "Spline Sans Mono",monospace; letter-spacing:.05em; color:#8A857D; background:rgba(255,255,255,.82); border-radius:5px; padding:2px 6px; pointer-events:none;}
+.rank{position:absolute; left:8px; top:8px; z-index:2; font:600 10px "Spline Sans Mono",monospace; letter-spacing:.05em; background:rgba(255,255,255,.9); color:var(--ink); border:1px solid var(--line); border-radius:99px; padding:3px 9px; pointer-events:none;}
+.rank.top{background:var(--accent); color:#fff; border-color:var(--accent);}
+.pc{display:flex; flex-direction:column; gap:2.5px; font-size:12.5px; margin:0; padding:0; list-style:none; color:var(--ink-2);}
+.pc li{display:flex; gap:7px; align-items:baseline;}
+.pc .g{color:var(--accent); font-weight:700; flex:none;}
+.pc .x{color:var(--warn); font-weight:700; flex:none;}
 .media{display:flex; gap:8px; margin-top:2px;}
 .media a{flex:1; text-align:center; font:600 12px "Nunito Sans",sans-serif; color:var(--ink); background:var(--chip); border:1px solid var(--line); border-radius:9px; padding:7px 8px; text-decoration:none; white-space:nowrap;}
 .media a:hover{border-color:var(--accent); color:var(--accent);}
@@ -190,161 +196,351 @@ footer a{color:var(--ink-2);}
 <script>
 const DATA = {
 stroller: [
- {id:'dfplus', name:'Bugaboo Dragonfly Plus', price:1049, badges:[['tech','Gadget pick'],['rev','Reviews pick']],
-  why:'21.8 lb-class, one-hand fold in ANY configuration (bassinet on!), self-standing, gate-check OK. 2026: longer seat, bigger UPF 50+ canopy, locking urban wheels.',
-  adapters:['nuna','cybex','maxicosi','clek'], adapterCost:0, adapterNote:'car-seat adapter included in box',
-  bassinet:{name:'Dragonfly bassinet', price:250},
-  colors:[['Midnight Black','#1a1a1e'],['Grey Melange','#9a9aa0'],['Forest Green','#2e4636'],['Desert Taupe','#b0a08c'],['Seaside Blue','#7fa8b8']],
-  links:[['Bugaboo','https://www.bugaboo.com/us-en/strollers/bugaboo-dragonfly/'],['Strolleria','https://strolleria.com/collections/infant-car-seats-compatible-with-bugaboo-dragonfly']]},
- {id:'df', name:'Bugaboo Dragonfly (original)', price:949, badges:[['value','Value pick'],['rev','Reviews pick']],
-  why:'Same frame, fold and weight as the Plus, minus the 2026 trim upgrades. Watch for model-changeover discounts — under ~$800 it is the value buy of the class.',
-  adapters:['nuna','cybex','maxicosi','clek'], adapterCost:0, adapterNote:'car-seat adapter included in box',
-  bassinet:{name:'Dragonfly bassinet', price:250},
-  colors:[['Midnight Black','#1a1a1e'],['Grey Melange','#9a9aa0'],['Forest Green','#2e4636'],['Desert Taupe','#b0a08c']],
-  links:[['Bugaboo','https://www.bugaboo.com/us-en/strollers/bugaboo-dragonfly/bugaboo-dragonfly-2-in-1-stroller-PM006447.html'],['Albee Baby','https://www.albeebaby.com/collections/bugaboo-dragonfly-strollers']]},
- {id:'triv', name:'Nuna TRIV lx', price:800, badges:[['tech','Gadget pick']],
-  why:'Magnetic harness, near-flat newborn recline, one-hand fold. Nuna Pipa seats click into the ring with zero adapters — the tightest single-brand pairing.',
-  adapters:['nuna','maxicosi','cybex'], adapterCost:0, adapterNote:'Pipa clicks in adapter-free (ring system)',
-  bassinet:{name:'TRIV bassinet (lytl)', price:300},
-  colors:[['Caviar','#17181c'],['Cedar','#6b4a3a'],['Biscotti','#d8cdb9'],['Granite','#5c5e63']],
-  links:[['Nuna','https://nunababy.com/'],['Strolleria','https://strolleria.com/']]},
- {id:'vista', name:'UPPAbaby Vista V3', price:999, badges:[['rev','Reviews pick'],['warn','~27 lb']],
-  why:'The full-size luxury benchmark: huge basket, expands to a double for kid #2. Trade-off: heaviest here, bulkier fold — fails a ≤25 lb / travel-first spec.',
-  adapters:['uppababy','nuna','cybex','maxicosi'], adapterCost:60, adapterNote:'Mesa native; Nuna/Cybex/Maxi-Cosi adapter ~$60',
+ {id:'vista', name:'UPPAbaby Vista V3', price:1000, badges:[['rev','Reviews pick']],
+  pros:['Wirecutter/BabyGearLab best of 2026','Expands to double/triple','Bassinet included; best-in-class resale'], cons:['Premium price','Heavy at 27.6 lb'],
+  weightLb:27.6, adapters:['uppababy','nuna','cybex','maxicosi','clek'], adapterCost:60, adapterNote:'Mesa clicks in bare; one adapter adds the rest',
   bassinet:{name:'Vista bassinet', price:0, note:'included'},
   colors:[['Jake Black','#1b1b1d'],['Greyson Grey','#77787c'],['Noa Navy','#2a3d5c']],
-  links:[['UPPAbaby','https://uppababy.com/'],['Strolleria','https://strolleria.com/blogs/news/best-strollers']]},
- {id:'mock', name:'Mockingbird Single-to-Double 3.0', price:450, badges:[['value','Value pick'],['warn','26.5 lb']],
-  why:'Luxury features at half the price; converts to a double; pairs with ~40 car seat models including Chicco. Trade-off: over 25 lb and less travel-friendly.',
-  adapters:['chicco','nuna','cybex','maxicosi','clek','uppababy'], adapterCost:25, adapterNote:'adapter ~$25, fits ~40 seat models',
+  links:[['UPPAbaby','https://uppababy.com/strollers/full-size/vista-v3/']]},
+ {id:'mock', name:'Mockingbird Single-to-Double 3.0', price:549, badges:[['value','Value pick']],
+  pros:['#1 most-registered stroller on Babylist','Single-to-double, 44 configurations','Premium features at half luxury pricing'], cons:['35 lb in double mode','Online-first, fewer showrooms'],
+  weightLb:27, adapters:['nuna','cybex','maxicosi','chicco','graco','britax','uppababy'], adapterCost:60, adapterNote:'brand adapters (~$50–70) cover 50+ seat models',
   bassinet:{name:'Mockingbird bassinet', price:145},
   colors:[['Black','#1c1c1c'],['Sage','#9aa88f'],['Bluebird','#6f8fae']],
-  links:[['Mockingbird','https://hellomockingbird.com/'],['The Bump vs Vista','https://www.thebump.com/a/mockingbird-vs-uppababy-vista-review']]}
+  links:[['Mockingbird','https://hellomockingbird.com/products/mockingbird-double-stroller']]},
+ {id:'pramette', name:'Graco Modes Pramette', price:250, badges:[['value','Value pick']],
+  pros:['#3 most-registered on Babylist','3-in-1 incl. pramette mode','Reversible seat at budget price'], cons:['4.1★ owner rating trails rivals','Graco infant seats only'],
+  weightLb:24.5, adapters:['graco'], adapterCost:0, adapterNote:'all Graco infant seats, no adapter needed',
+  links:[['Graco','https://www.gracobaby.com/shop/strollers/full-size-strollers/modes-pramette-stroller/SP_1964581.html']]},
+ {id:'cruz', name:'UPPAbaby Cruz V3', price:900, badges:[['rev','Reviews pick']],
+  pros:['Babylist Best Stroller Overall 2026','Newborn-ready lie-flat seat','FlexRide suspension, magnetic buckle'], cons:['No double conversion','Still a premium spend'],
+  weightLb:26.5, adapters:['uppababy','nuna','cybex','maxicosi','clek'], adapterCost:60, adapterNote:'same adapter system as Vista',
+  links:[['UPPAbaby','https://uppababy.com/strollers/full-size/cruz-v3/']]},
+ {id:'mixx', name:'Nuna MIXX next', price:900, badges:[],
+  pros:['#4 most-registered on Babylist','Flat-lay seat, 4 riding modes','MagneTech self-locking buckle'], cons:['Heaviest here at 28.3 lb','Nuna PIPA seats only'],
+  weightLb:28.3, adapters:['nuna'], adapterCost:0, adapterNote:'all PIPA-series seats via ring adapter',
+  links:[['Nuna','https://nunababy.com/usa/mixx-next-compact-stroller']]},
+ {id:'df', name:'Bugaboo Dragonfly', price:1099, priceNote:'retired 2026 — closeout ~$935', badges:[['value','Value pick']],
+  pros:['Signature one-hand any-config fold','Full-size comfort, city footprint','21.8 lb — light for full-featured'], cons:['Discontinued (→ Dragonfly Plus)','Bassinet sold separately'],
+  weightLb:21.8, adapters:['nuna','cybex','maxicosi','clek'], adapterCost:0, adapterNote:'car-seat adapter included in box',
+  bassinet:{name:'Dragonfly bassinet', price:250},
+  colors:[['Midnight Black','#1a1a1e'],['Grey Melange','#9a9aa0'],['Forest Green','#2e4636'],['Desert Taupe','#b0a08c']],
+  links:[['Bugaboo','https://www.bugaboo.com/us-en/strollers/bugaboo-dragonfly/bugaboo-dragonfly-seat-stroller-PM006775.html']]},
+ {id:'dfplus', name:'Bugaboo Dragonfly Plus', price:1099, priceNote:'2-in-1 with bassinet $1,349', badges:[['tech','Gadget pick'],['rev','Reviews pick']],
+  pros:['2026 update: bigger canopy, new wheels','Red Dot Design Award 2026','One-hand fold, XL 22-lb basket','Only premium pick under 25 lb w/ bassinet'], cons:['Brand-new, short track record','Costs more than Dragonfly closeouts'],
+  weightLb:21.8, adapters:['nuna','cybex','maxicosi','clek'], adapterCost:0, adapterNote:'car-seat adapter included in box',
+  bassinet:{name:'Dragonfly bassinet', price:250},
+  colors:[['Midnight Black','#1a1a1e'],['Grey Melange','#9a9aa0'],['Forest Green','#2e4636'],['Desert Taupe','#b0a08c'],['Seaside Blue','#7fa8b8']],
+  links:[['Bugaboo','https://www.bugaboo.com/us-en/bugaboo-dragonfly-compact-city-stroller/']]},
+ {id:'triv', name:'Nuna TRIV lx', price:950, badges:[['tech','Gadget pick']],
+  pros:['Full 2026 redesign, 21.1 lb','Carbon-reinforced frame','Near-flat newborn recline'], cons:['Just released — ships mid-Sept 2026','Nuna PIPA seats only'],
+  weightLb:21.1, adapters:['nuna'], adapterCost:0, adapterNote:'PIPA-series seats; TRIV bassinet compatible',
+  bassinet:{name:'TRIV bassinet', price:300},
+  colors:[['Caviar','#17181c'],['Cedar','#6b4a3a'],['Biscotti','#d8cdb9'],['Granite','#5c5e63']],
+  links:[['Nuna','https://nunababy.com/usa/triv-lx-stroller']]},
+ {id:'fox5', name:'Bugaboo Fox 5', price:1299, badges:[],
+  pros:['Flagship all-terrain ride','2-in-1 bassinet + seat included','One-hand steering at 26.9 lb'], cons:['$1,300+ flagship pricing','Large footprint for small cars'],
+  weightLb:26.9, adapters:['nuna','cybex','maxicosi','clek'], adapterCost:70, adapterNote:'Fox adapter $69.95',
+  bassinet:{name:'Fox 5 bassinet', price:0, note:'included'},
+  links:[['Bugaboo','https://www.bugaboo.com/us-en/bugaboo-fox-5-ultimate-all-terrain-stroller/']]},
+ {id:'reef', name:'Silver Cross Reef 2', price:1200, badges:[['warn','style pick']],
+  pros:['5 riding modes, newborn to 55 lb','British luxury build, sculpted seat','Overnight-approved bassinet option','One-hand self-standing fold'], cons:['Bassinet is $450 extra','Accessories add up fast'],
+  weightLb:26.5, adapters:['clek','cybex','maxicosi','nuna'], adapterCost:50, adapterNote:'adapters $49.99, sold separately',
+  bassinet:{name:'Reef 2 bassinet (overnight-rated)', price:450},
+  links:[['Silver Cross','https://silvercrossus.com/product/silver-cross-reef-2-foldable-stroller/']]}
 ],
 seat: [
- {id:'pipaaire', name:'Nuna Pipa aire rx', brand:'nuna', price:450, base2:200, badges:[['tech','Gadget pick'],['rev','Reviews pick']],
-  why:'Lightest premium carrier, stability load leg + anti-rebound base, 2026 side-impact certified, merino inserts.',
-  colors:[['Caviar','#17181c'],['Biscotti','#d8cdb9'],['Cedar','#6b4a3a'],['Granite','#5c5e63']],
-  links:[['Nuna','https://nunababy.com/'],['Compatibility','https://www.babycubby.com/pages/nuna-pipa-aire-pipa-aire-rx-compatibility']]},
- {id:'cloudg', name:'Cybex Cloud G Lux', brand:'cybex', price:400, base2:180, badges:[['tech','Gadget pick']],
-  why:'Full-recline lie-flat on the stroller (rare), load leg, SensorSafe chest-clip alerts available.',
-  colors:[['Moon Black','#1d1d20'],['Lava Grey','#6e6f73'],['Seashell Beige','#cfc3b1']],
-  links:[['Cybex','https://cybex-online.com/']]},
- {id:'mico', name:'Maxi-Cosi Mico Luxe', brand:'maxicosi', price:250, base2:150, badges:[['value','Value pick']],
-  why:'The value seat that still clicks natively into Bugaboo/Nuna adapters. No load leg on the standard base.',
-  colors:[['Midnight Glow','#23252c'],['Stone Glow','#a9a49b']],
-  links:[['Target','https://www.target.com/s?searchTerm=maxi+cosi+mico+luxe']]},
- {id:'keyfit', name:'Chicco KeyFit Max', brand:'chicco', price:230, base2:120, badges:[['rev','Reviews pick'],['value','Value pick']],
-  why:'The Bump best mid-price 2026, easiest correct install in class, anti-rebound bar. Limited stroller ecosystem — no Bugaboo adapter exists.',
+ {id:'keyfit', name:'Chicco KeyFit Max ClearTex', brand:'chicco', price:250, base2:145, badges:[['rev','Reviews pick'],['value','Value pick']],
+  pros:['Easiest correct install (SuperCinch)','#3 most-registered on Babylist','GREENGUARD Gold, FR-chem-free'], cons:['No load leg on base'],
   colors:[['Black','#1b1b1b'],['Slate','#5b6068']],
-  links:[['The Bump tests','https://www.thebump.com/a/best-infant-car-seats']]},
- {id:'mesa', name:'UPPAbaby Mesa V2', brand:'uppababy', price:350, base2:170, badges:[['rev','Reviews pick']],
-  why:'Native click into the Vista/Cruz with zero adapters; visual SmartSecure install indicator.',
+  links:[['Chicco','https://www.chiccousa.com/shop-our-products/car-seats/infant/keyfit-max-cleartex-infant-car-seat/87111.html']]},
+ {id:'pipaaire', name:'Nuna PIPA aire rx', brand:'nuna', price:650, base2:250, badges:[['tech','Gadget pick']],
+  pros:['Ultra-light 6.2-lb Aeroflex shell','RELX base: load leg + anti-rebound','Baseless taxi/travel install'], cons:['Premium price','30 lb/30 in limit lower than rivals'],
+  colors:[['Caviar','#17181c'],['Biscotti','#d8cdb9'],['Cedar','#6b4a3a'],['Granite','#5c5e63']],
+  links:[['Nuna','https://nunababy.com/usa/pipa-aire-rx']]},
+ {id:'doona', name:'Doona+ Car Seat & Stroller', brand:'doona', price:650, priceNote:'Midnight Edition $750', badges:[['tech','Gadget pick']],
+  pros:['Converts to stroller in seconds','#2 most-registered on Babylist','FAA-approved for air travel'], cons:['Outgrown around 12 months',"Doesn't click into other strollers"],
+  links:[['Doona','https://www.doona.com/en-us/car-seat-stroller/discover-doona-plus']]},
+ {id:'snugride', name:'Graco SnugRide SnugFit 35 DLX', brand:'graco', price:240, base2:140, badges:[['value','Value pick']],
+  pros:['4.8★ across 7,000+ owner reviews','Anti-rebound bar included','SnugLock under-1-minute install'], cons:['Load leg only on pricier variant'],
+  links:[['Graco','https://www.gracobaby.com/shop/car-seats/infant-car-seats/snugride-snugfit-dlx-infant-car-seat/SP_332433.html']]},
+ {id:'mesa', name:'UPPAbaby Mesa V2', brand:'uppababy', price:300, base2:200, priceNote:'closeout; Mesa V3 is $350', badges:[['rev','Reviews pick']],
+  pros:['Clicks into Vista/Cruz, zero adapters','European belt routing baseless install','Big UPF canopy, plush inlay'], cons:['Being phased out for Mesa V3','Only 2 colors remain'],
   colors:[['Jake Black','#1b1b1d'],['Greyson Grey','#77787c']],
-  links:[['UPPAbaby','https://uppababy.com/']]}
+  links:[['UPPAbaby','https://uppababy.com/car-seats/']]},
+ {id:'cloudg', name:'Cybex Cloud G Lux', brand:'cybex', price:300, base2:250, priceNote:'load-leg-base version ~$500', badges:[['tech','Gadget pick']],
+  pros:['Full recline + leg rest on stroller','SensorSafe chest-clip phone alerts','Anti-rebound bar + load leg base'], cons:['Heavy 12-lb carrier','Shines most within Cybex strollers'],
+  colors:[['Moon Black','#1d1d20'],['Lava Grey','#6e6f73'],['Seashell Beige','#cfc3b1']],
+  links:[['Cybex','https://www.cybex-online.com/en/us/gold-cloud-g-lux.html']]},
+ {id:'willow', name:'Britax Willow S', brand:'britax', price:280, base2:180, badges:[],
+  pros:['ClickTight foolproof belt install','Anti-rebound Alpine base included','17-in width fits 3-across'], cons:['Limited stroller compatibility'],
+  links:[['Britax','https://us.britax.com/shop/car-seats/willow-s-clicktight-infant-car-seat']]},
+ {id:'mico', name:'Maxi-Cosi Mico Luxe', brand:'maxicosi', price:200, base2:136, priceNote:'Luxe+ w/ load leg ~$300', badges:[['value','Value pick']],
+  pros:['Lightweight, easy taxi-mode install','Machine-washable, dryer-safe fabrics','Widest adapter support across brands'], cons:['No load leg on standard base','Being succeeded by Luxe+'],
+  colors:[['Midnight Glow','#23252c'],['Stone Glow','#a9a49b']],
+  links:[['Maxi-Cosi','https://www.maxicosi.com/us-en/mico-luxe-infant-car-seat-ic365-mc-us-en.html']]},
+ {id:'litemax', name:'Evenflo LiteMax 30', brand:'evenflo', price:150, base2:90, badges:[['value','Value pick']],
+  pros:['Under 8 lb — lightest-in-class carry','Budget price, fits 4-lb preemies','Belt lock-off base included'], cons:['Load leg only on DLX version','Fewer premium touches'],
+  links:[['Evenflo','https://www.evenflo.com/products/litemax-30-infant-car-seats']]},
+ {id:'liing', name:'Clek Liing', brand:'clek', price:500, base2:300, badges:[],
+  pros:['Rigid-LATCH + metal load leg','7 recline positions','Narrow for 3-across; lifetime warranty'], cons:['Expensive; extra base is $300','Niche brand, fewer retail options'],
+  links:[['Clek','https://clekinc.com/products/liing']]}
 ],
 bassinet: [
- {id:'halo', name:'Halo BassiNest 4.0', price:300, badges:[['rev','Reviews pick']],
-  why:'The Bump best overall 2026: 360° swivel + push-down wall — feed without sitting up. Nightlight, sounds, feeding timer.',
-  links:[['The Bump tests','https://www.thebump.com/a/best-bassinets'],['Halo','https://halosleep.com/']]},
- {id:'newton', name:'Newton Bassinet & Bedside Sleeper', price:299, badges:[['value','Value pick']],
-  why:'Breathable mesh everywhere, converts to bedside-sleeper mode, best-looking of the non-smart field.',
-  links:[['Newton','https://www.newtonbaby.com/']]},
- {id:'snoo', name:'SNOO Smart Sleeper (rental)', price:960, priceNote:'~$160/mo × ~6 mo', badges:[['tech','Gadget pick']],
-  why:'Detects crying, auto-responds with graduated rocking + white noise, app sleep logs. Rent — babies age out by ~6 months.',
-  links:[['Happiest Baby rental','https://www.happiestbaby.com/products/snoo-rental']]},
- {id:'snuz', name:'SnuzPod 5 (walnut)', price:299, badges:[['value','Value pick']],
-  why:'The style pick: real wood bedside bassinet with drop wall and incline for reflux. 4.5★ (The Bump tested).',
-  links:[['Snüz','https://snuz.co.uk/']]}
+ {id:'halo', name:'Halo BassiNest Swivel Sleeper 4.0', price:280, badges:[['rev','Reviews pick']],
+  pros:['360° swivel + lowering wall over bed','2026 redesign: sturdier, lower base','C-section-recovery friendly'], cons:['Big 33-in floor footprint'],
+  links:[['HALO','https://www.halosleep.com/products/bassinest-4-0-signature']]},
+ {id:'snoo', name:'Happiest Baby SNOO Smart Sleeper', price:1695, priceNote:'rentals from $159/mo', badges:[['tech','Gadget pick']],
+  pros:['Responsive rocking + white noise auto-soothing','Swaddle clips keep safe back-sleeping','Top pick across major 2026 lists'], cons:['$1,695 — costliest by far','~6-month usable window'],
+  links:[['Happiest Baby','https://www.happiestbaby.com/products/snoo-smart-bassinet'],['Rental','https://www.happiestbaby.com/products/snoo-rental']]},
+ {id:'newton', name:'Newton Bassinet & Bedside Sleeper', price:300, badges:[['value','Value pick']],
+  pros:['Babylist Best Bassinet Overall 2026','Breathe-thru washable Wovenaire mattress','Converts to strapped bedside sleeper'], cons:['No soothing/motion features','Bedside mode needs 19.5–25 in beds'],
+  links:[['Newton Baby','https://www.newtonbaby.com/products/bassinet-bedside-sleeper']]},
+ {id:'mika', name:'Mika Micky Bedside Sleeper', price:100, priceNote:'often ~$80 with coupon', badges:[['value','Value pick']],
+  pros:['Amazon bestseller, 8,400+ ratings','7 heights fit almost any bed','All-mesh sides, lockable wheels'], cons:['Short 4–6 month usable window'],
+  links:[['Mika Micky','https://mikamickybassinet.com/bassinet-mika-micky/']]},
+ {id:'iora', name:'Maxi-Cosi Iora Bedside Bassinet', price:280, priceNote:'often $210–250 street', badges:[['rev','Reviews pick']],
+  pros:['Consumer Reports top pick 2 yrs running','4 heights + 3 slide positions hug bed','Folds flat with travel bag'], cons:['No built-in soothing features'],
+  links:[['Maxi-Cosi','https://maxicosi.com/products/iora-bedside-bassinet-bt079']]},
+ {id:'skylar', name:'Dream On Me Skylar Bassinet', price:200, priceNote:'widely discounted online', badges:[],
+  pros:['High-volume Amazon favorite, 5 colors','5 heights + bedside strap','Aluminum frame, tool-free setup'], cons:["Mesh walls don't drop down"],
+  links:[['Dream On Me','https://dreamonme.com/products/skylar-bassinet-and-bedside-sleeper']]},
+ {id:'snuz', name:'SnuzPod 5 Bedside Bassinet', price:299, badges:[['warn','style pick']],
+  pros:['3-in-1: bedside, standalone, rocking basket','Zip-down mesh side for night access','Original UK bedside-crib maker'], cons:['New to US — smaller support network'],
+  links:[['Snuz','https://snuz.com/products/snuzpod5-bedside-bassinet-natural']]},
+ {id:'whisper', name:'babyGap Whisper Bedside Bassinet', price:150, badges:[],
+  pros:['Zip-down wall converts to bedside mode','Fabrics from recycled bottles','6 heights, wheels, storage pockets'], cons:['Hefty 22.5-lb unit to move'],
+  links:[['Delta Children','https://www.deltachildren.com/products/baby-gap-whisper-bedside-bassinet']]},
+ {id:'lullago', name:'Chicco LullaGo Anywhere', price:110, badges:[['value','Value pick']],
+  pros:['12 lb with carry bag — home or travel','GREENGUARD Gold certified','Zip-off machine-washable fabrics'], cons:['No drop side — not a true bedside sleeper'],
+  links:[['Chicco','https://www.chiccousa.com/shop-our-products/bassinets/lullago-bassinets/lullago-anywhere-bassinet/79061.html']]},
+ {id:'bjorn-cradle', name:'BabyBjörn Cradle', price:300, badges:[],
+  pros:["Gentle rocking from baby's own movement",'Airy mesh, featherweight 13 lb','Folds to 5 in for travel'], cons:['Fixed height, sits below bed level','18-lb cap ends use sooner'],
+  links:[['BabyBjörn','https://www.babybjorn.com/products/baby-cradle-and-travel-crib/baby-cradle/']]}
 ],
 monitor: [
- {id:'sight', name:'Owlet Dream Sight', price:170, badges:[['tech','Gadget pick']],
-  why:'Pairs with the Owlet Dream Sock to form the Dream Duo — the only FDA-cleared pulse-ox system with video + vitals in one app.',
-  links:[['Owlet','https://owletcare.com/']]},
- {id:'eufy', name:'Eufy E21 4K', price:260, badges:[['value','Value pick']],
-  why:'Sharpest picture tested, every feature included, $0/month forever. No vitals integration.',
-  links:[['Fathercraft tests','https://fathercraft.com/baby-monitor-reviews/']]},
- {id:'nanit', name:'Nanit Pro', price:289, priceNote:'+ $10–15/mo', badges:[['rev','Reviews pick'],['warn','subscription']],
-  why:'Tops most 2026 lists for sleep analytics — but the analytics live behind a subscription reviewers price at $420–780 over two years.',
-  links:[['BabyGearLab','https://www.babygearlab.com/topics/health-safety/best-video-monitor']]},
+ {id:'nanit', name:'Nanit Pro', price:230, priceNote:'1 yr Insights incl., sub after', badges:[['rev','Reviews pick'],['warn','subscription']],
+  pros:["Babylist's most-registered monitor",'Sensor-free breathing tracking band','Best-in-class sleep analytics app'], cons:['Requires Wi-Fi','Full analytics paid after year 1'],
+  links:[['Nanit','https://www.nanit.com/products/nanit-pro-camera']]},
  {id:'dxr', name:'Infant Optics DXR-8 Pro', price:200, badges:[['value','Value pick']],
-  why:'No wifi, no app, no cloud — a dedicated handheld unit that works through walls. The privacy-first pick.',
-  links:[['Fathercraft tests','https://fathercraft.com/baby-monitor-reviews/']]}
+  pros:['Amazon best-seller, ~100k reviews','No-WiFi encrypted video','Interchangeable zoom lenses'], cons:['No smartphone viewing','720p only'],
+  links:[['Infant Optics','https://www.infantoptics.com/product/dxr-8-pro']]},
+ {id:'vtech', name:'VTech VM819', price:60, badges:[['value','Value pick']],
+  pros:['Top-selling budget monitor on Amazon','1,000 ft range, 19-hr battery','Temperature sensor and lullabies'], cons:['Small 2.8-inch screen','Basic feature set'],
+  links:[['VTech','https://www.vtechphones.com/store/pd/4523/VM819-28-digital-Video-Baby-Monitor']]},
+ {id:'sight', name:'Owlet Dream Sight', price:100, priceNote:'optional Owlet360 $9.99/mo', badges:[['tech','Gadget pick']],
+  pros:['2K HD video, cry detection','Pairs with Dream Sock ecosystem','Standout smart-cam value at $99'], cons:['Wi-Fi required','Extended storage needs Owlet360'],
+  links:[['Owlet','https://owletcare.com/products/dream-sight']]},
+ {id:'hellobaby', name:'HelloBaby HB6550', price:100, badges:[],
+  pros:['Perennial Amazon best-seller','5-inch screen, pan-tilt-zoom','No Wi-Fi, plug-and-play'], cons:['Modest ~190 ft real-world range','No app access'],
+  links:[['HelloBaby','https://www.hellobaby-monitor.com/products/hellobaby-video-monitor-with-5display-pan-tilt-zoom-video-baby-camera-no-wifi-night-vision-temperature-lullabies']]},
+ {id:'eufy', name:'eufy Baby Monitor E21 (4K)', price:250, priceNote:'no subscription ever', badges:[['value','Value pick']],
+  pros:['4K camera, hybrid Wi-Fi/local mode','Free AI cry and sleep alerts','Battery cam with charging base'], cons:['Newer ecosystem, fewer accessories','4K needs strong Wi-Fi'],
+  links:[['eufy','https://www.eufy.com/products/e8354121']]},
+ {id:'duo', name:'Owlet Dream Duo 3', price:380, badges:[['tech','Gadget pick']],
+  pros:['FDA-cleared pulse-ox Dream Sock','Heart rate and oxygen alerts','Top-registered wearable monitor'], cons:['Priciest mainstream option','Sock fit takes practice'],
+  links:[['Owlet','https://owletcare.com/products/dream-duo-3']]},
+ {id:'momcozy-bm', name:'Momcozy BM01', price:140, badges:[],
+  pros:["Babylist 2026 'Best Video' pick",'1080p 5-inch non-WiFi display','5000mAh battery lasts all night'], cons:['No smartphone viewing','Limited smart features'],
+  links:[['Momcozy','https://momcozy.com/products/momcozy-video-baby-monitor']]},
+ {id:'babysense', name:'Babysense HD S2 (2 cameras)', price:180, badges:[],
+  pros:['True split-screen, two cameras','Closed non-WiFi system','Night light and sound machine'], cons:['720p resolution','Bulkier two-camera setup'],
+  links:[['Babysense','https://www.babysensemonitors.com/products/hd-split-screen-2-camera-baby-video-monitor']]},
+ {id:'motorola', name:'Motorola PIP1510 Connect', price:150, badges:[],
+  pros:['5-inch parent unit plus app','Remote pan-tilt-zoom','Long-trusted nursery brand'], cons:['App reliability complaints','Middling night vision'],
+  links:[['Motorola Nursery','https://motorolanursery.com/nursery-care-products/connected-video-baby-monitors/pip1510-connect/']]}
 ],
 crib: [
- {id:'hudson', name:'Babyletto Hudson 3-in-1 + Newton mattress', price:650, badges:[['rev','Reviews pick'],['value','Value pick']],
-  why:'Consensus mid-price crib (solid wood, GREENGUARD Gold, toddler rail included) + the mattress that led 2026 airflow testing.',
-  links:[['Babyletto','https://babyletto.com/'],['CR crib tests','https://www.consumerreports.org/babies-kids/cribs/best-cribs-of-the-year-a1108411107/']]},
- {id:'nestig', name:'Nestig Cloud + Newton mattress', price:1050, badges:[['tech','Design splurge']],
-  why:'The design-forward crib — converts mini → full → toddler. Pay for the look; the safety testing is equal.',
-  links:[['Nestig','https://nestig.com/'],['Hudson vs Cloud','https://tinylog.app/guides/babyletto-hudson-vs-nestig-cloud-crib']]},
- {id:'ikea', name:'IKEA Sniglar + Naturepedic mattress', price:390, badges:[['value','Value pick']],
-  why:'The honest budget build: IKEA’s solid-beech crib passes the same safety standard; spend the savings on an organic Naturepedic mattress.',
-  links:[['IKEA','https://www.ikea.com/us/en/cat/cribs-16053/'],['Mattress tests','https://mommyhood101.com/best-crib-mattress']]}
+ {id:'hudson', name:'Babyletto Hudson 3-in-1', price:399, priceNote:'+ mattress (Newton ~$250)', badges:[['rev','Reviews pick']],
+  pros:['Most-registered modern crib on Babylist','GREENGUARD Gold certified','Toddler conversion kit included'], cons:['Low under-crib clearance','Premium price for pine'],
+  links:[['Babyletto','https://babyletto.com/products/hudson-3-in-1-convertible-crib-with-toddler-bed-conversion-kit']]},
+ {id:'graco-crib', name:'Graco Benton 5-in-1', price:200, priceNote:'+ mattress', badges:[['value','Value pick']],
+  pros:['Amazon best-selling budget crib','Converts through full-size bed','GREENGUARD Gold certified'], cons:['Conversion kits sold separately','Soft pine dents easily'],
+  links:[['Graco / Storkcraft','https://www.storkcraft.com/products/graco%C2%AE-benton-5-in-1-convertible-crib']]},
+ {id:'kalani', name:'DaVinci Kalani 4-in-1', price:249, priceNote:'+ mattress', badges:[],
+  pros:['Thousands of Amazon reviews','Four mattress heights','GREENGUARD Gold, sustainable pine'], cons:['Toddler rail sold separately','Traditional curves not for everyone'],
+  links:[['DaVinci','https://davincibaby.com/products/kalani-4-in-1-convertible-crib']]},
+ {id:'delta-crib', name:'Delta Heartland 4-in-1', price:130, priceNote:'+ mattress', badges:[['value','Value pick']],
+  pros:['Huge big-box sales volume','GREENGUARD Gold certified','Converts to toddler, daybed, full'], cons:['Guardrail and bed-frame kits extra','Basic finish selection'],
+  links:[['Delta Children','https://www.deltachildren.com/products/heartland-4-in-1-convertible-crib']]},
+ {id:'ikea', name:'IKEA Sniglar', price:130, priceNote:'+ mattress', badges:[['value','Value pick']],
+  pros:['Cult-favorite solid-beech minimalist','Unbeatable price for solid wood','Two mattress heights'], cons:['No conversion options','Single finish only'],
+  links:[['IKEA','https://www.ikea.com/us/en/p/sniglar-crib-beech-50248541/']]},
+ {id:'dreamonme', name:'Dream On Me Synergy 5-in-1', price:140, priceNote:'+ mattress', badges:[],
+  pros:['Ultra-affordable 5-in-1 convertible','GREENGUARD Gold certified','Solid New Zealand pine'], cons:['Feels lighter than pricier cribs','Conversion kits sold separately'],
+  links:[['Dream On Me','https://www.dreamonme.com/products/cribs/full-size-cribs/synergy-5-in-1-convertible-crib/']]},
+ {id:'nestig', name:'Nestig Cloud', price:899, priceNote:'+ mattress', badges:[['tech','Design splurge']],
+  pros:['Viral TikTok/Instagram favorite','Grows from cradle to full crib','Handmade Brazilian-wood design'], cons:['Premium price','Casters divide opinion'],
+  links:[['Nestig','https://www.nestig.com/products/modern-cloud-crib']]},
+ {id:'lolly', name:'Babyletto Lolly 3-in-1', price:399, priceNote:'+ mattress', badges:[],
+  pros:['Popular natural-spindle modern design','GREENGUARD Gold, toddler kit included','Rounded solid-pine feet'], cons:['Two-tone look polarizing','Visible hardware'],
+  links:[['Babyletto','https://babyletto.com/collections/cribs/products/lolly-3-in-1-convertible-crib-with-toddler-bed-conversion-kit']]},
+ {id:'storkcraft', name:'Storkcraft Equinox 3-in-1', price:350, priceNote:'street often lower · + mattress', badges:[],
+  pros:['Walmart/Amazon volume seller','Four adjustable mattress heights','GREENGUARD Gold certified'], cons:['Simple builder-grade styling','Toddler guardrail extra'],
+  links:[['Storkcraft','https://www.storkcraft.com/products/storkcraft%C2%AE-equinox-3-in-1-convertible-crib']]},
+ {id:'jennylind', name:'DaVinci Jenny Lind 3-in-1', price:249, priceNote:'+ mattress', badges:[],
+  pros:['Classic spindle design, decades popular','Lightweight with locking casters','GREENGUARD Gold certified'], cons:["Vintage look won't suit all nurseries",'Casters feel wobbly to some'],
+  links:[['DaVinci','https://davincibaby.com/products/jenny-lind-3-in-1-convertible-crib']]}
 ],
 pump: [
- {id:'spectra', name:'Spectra S1 Plus — via insurance', price:0, priceNote:'$0 if covered ($190 retail)', badges:[['rev','Reviews pick'],['value','Value pick']],
-  why:'#1 overall 2026: hospital-strength, quiet, rechargeable. ACA requires most plans to cover a pump — check eligibility BEFORE buying anything.',
-  links:[['Babylist Health check','https://www.babylist.com/health'],['BabyGearLab','https://www.babygearlab.com/topics/nursing-feeding/best-breast-pump']]},
- {id:'elvie', name:'Elvie Stride (wearable add-on)', price:200, badges:[['tech','Gadget pick']],
-  why:'In-bra, silent, app-connected, with real suction — the mobility pump as a second unit. Ranked over Willow Go (leak reports).',
-  links:[['Elvie','https://www.elvie.com/'],['Wearable rankings','https://www.1naturalway.com/blog/best-wearable-breast-pumps']]},
- {id:'haakaa', name:'Haakaa + storage set', price:30, badges:[['value','Value pick']],
-  why:'The $15 silicone catch on every "weirdly essential" list, plus Lansinoh storage bottles. Highest value-per-dollar in feeding.',
-  links:[['Target','https://www.target.com/s?searchTerm=haakaa']]}
+ {id:'spectra', name:'Spectra S1 Plus', price:200, priceNote:'often $0 via insurance', badges:[['rev','Reviews pick'],['value','Value pick']],
+  pros:['Hospital-strength suction, whisper quiet','Built-in rechargeable battery','#1 across 2026 best-of lists'], cons:['Bulkier than wearables','Not hands-free without pumping bra'],
+  links:[['Spectra','https://www.spectrababyusa.com/products/spectra-s1-plus-premier-rechargeable-double-electric-breast-pump'],['Insurance check','https://www.babylist.com/health']]},
+ {id:'momcozy-m5', name:'Momcozy M5 Smart Wearable', price:170, badges:[['value','Value pick']],
+  pros:["Babylist's most-registered pump 2026",'Fully in-bra, cordless, discreet','Only 4 parts to wash'], cons:['Weaker suction than plug-ins','Battery fades with heavy use'],
+  links:[['Momcozy','https://momcozy.com/products/m5-smart-wearable-breast-pump-upgraded-with-app-control']]},
+ {id:'haakaa', name:'Haakaa Silicone Pump (Gen 2)', price:15, badges:[['value','Value pick']],
+  pros:['Catches letdown milk passively','One-piece silicone, dead simple','Registry staple, huge review counts'], cons:['Not a true active pump','Easy to knock over and spill'],
+  links:[['Haakaa USA','https://haakaausa.com/products/haakaa-silicone-breast-pump-with-suction-base-4-oz-1-pk']]},
+ {id:'medela-pisa', name:'Medela Pump In Style MaxFlow', price:199, priceNote:'commonly $0 via insurance', badges:[['rev','Insurance favorite']],
+  pros:['Top insurance-plan pump for decades','MaxFlow boosts output ~12%','Closed system, hospital-grade motor'], cons:['Loud versus Spectra','No built-in rechargeable battery'],
+  links:[['Medela','https://www.medela.com/en-us/breastfeeding-pumping/products/pumps/classic-electric/pump-in-style-with-maxflow-breast-pump?productId=6053']]},
+ {id:'elvie', name:'Elvie Stride', price:250, priceNote:'often insurance-upgrade eligible', badges:[['tech','Gadget pick']],
+  pros:['Hospital-grade suction, wearable cups','Slim in-bra profile, quiet','App output tracking'], cons:['Tubing to clip-on hub','Cups can leak if tilted'],
+  links:[['Elvie','https://elvie.com/products/elvie-stride']]},
+ {id:'willow-go', name:'Willow Go', price:300, badges:[],
+  pros:['Fully in-bra, no tubes or cords','Ranked #1 for comfort by users','App session tracking'], cons:['Pricey out of pocket','Containers cap at 7 oz'],
+  links:[['Willow','https://onewillow.com/products/willow-go-pump-kit']]},
+ {id:'medela-freestyle', name:'Medela Freestyle Hands-Free', price:299, badges:[],
+  pros:['Ultralight 2.7 oz collection cups','Pocket-size pump unit','Two-phase expression mimics nursing'], cons:['Visible tubing','Cups hold less than bottles'],
+  links:[['Medela','https://www.medela.com/en-us/breastfeeding-pumping/products/pumps/hands-free-electric/freestyle-hands-free-breast-pump?productId=4072']]},
+ {id:'spectra-s2', name:'Spectra S2 Plus', price:178, badges:[['value','Value pick']],
+  pros:['Same hospital-strength motor as S1','Lighter and cheaper than S1','Quiet night-pumping favorite'], cons:['Must stay plugged in'],
+  links:[['Spectra','https://www.spectrababyusa.com/products/spectra-s2-plus-premier-double-electric-breast-pump']]},
+ {id:'momcozy-m9', name:'Momcozy M9 Mobile Flow', price:270, badges:[['tech','Gadget pick']],
+  pros:['Stronger suction than M5','App-personalized rhythms','Long battery, compact cups'], cons:['Newer model, smaller track record','More parts than M5'],
+  links:[['Momcozy','https://momcozy.com/products/momcozy-mobile-flow-hands-free-breast-pump']]},
+ {id:'eufy-s1', name:'eufy Wearable Pump S1 Pro', price:350, badges:[['tech','Gadget pick']],
+  pros:['Babylist 2026 best wearable pick','HeatFlow warming for comfort','5-day charging case, very quiet'], cons:['Premium price','Heavier than slim wearables'],
+  links:[['eufy','https://www.eufy.com/products/t8d04121']]}
 ],
 feeding: [
- {id:'drbrowns', name:"Dr. Brown's Anti-Colic Options+ gift set", price:100, badges:[['rev','Reviews pick']],
-  why:'The consensus anti-colic system; glass versions available. Start here, keep one alternative brand on hand in case baby disagrees.',
-  links:[['Dr. Brown\'s','https://www.drbrownsbaby.com/']]},
- {id:'lansinoh', name:'Lansinoh Anti-Colic bottles (4-pack)', price:19, badges:[['value','Value pick']],
-  why:'4.7★ (454) — the budget anti-colic set whose NaturalWave nipples pair naturally with a Lansinoh/Spectra pumping setup.',
-  links:[['Lansinoh','https://lansinoh.com/']]},
- {id:'brezza', name:'Baby Brezza Formula Pro Advanced', price:195, badges:[['tech','Gadget pick']],
-  why:'The Keurig of formula — dispenses a mixed, warmed bottle in seconds. 4.7★ (41.7k). Only worth it if formula is in the plan.',
-  links:[['Baby Brezza','https://babybrezza.com/']]},
- {id:'sterilizer', name:'Bottle washer-sterilizer-dryer', price:300, badges:[['tech','Gadget pick']],
-  why:'Momcozy KleanPal Pro or Baby Brezza Bottle Washer Pro (4.5★, 7.1k) — one machine takes bottle chores off the counter entirely.',
-  links:[['Baby Brezza','https://babybrezza.com/'],['Momcozy','https://momcozy.com/']]}
+ {id:'drbrowns', name:"Dr. Brown's Options+ Anti-Colic bottles", price:27, priceNote:'4-pack, 8 oz', badges:[['rev','Reviews pick']],
+  pros:['#1 pediatrician-recommended US bottle','Vent clinically reduces colic/gas','Babylist most-registered bottle 2026'], cons:['Many parts to wash','Can leak if vent misaligned'],
+  links:[["Dr. Brown's",'https://drbrownsbaby.com/products/dr-browns-natural-flow-anti-colic-options-baby-bottle-8oz-250ml']]},
+ {id:'avent', name:'Philips Avent Natural Response', price:32, priceNote:'4-pack, 9 oz', badges:[],
+  pros:['Breast-like nipple, milk on demand','Wide neck, few parts, easy cleaning','Registry and Amazon best-seller'], cons:['Some newborns fight the flow gate','Nipple sizing trial-and-error'],
+  links:[['Philips Avent','https://www.usa.philips.com/c-p/SCY903_04/natural-response-baby-bottle']]},
+ {id:'brezza', name:'Baby Brezza Formula Pro Advanced', price:229, badges:[['tech','Gadget pick']],
+  pros:['Warm mixed bottle in seconds','Airtight dispenser, 8 temp settings','Works with nearly all formulas'], cons:['Needs regular cleaning to dose right','Counter space hog'],
+  links:[['Baby Brezza','https://babybrezza.com/collections/bottle-prep-cleaning/products/formula-pro-advanced']]},
+ {id:'sterilizer', name:'Baby Brezza Bottle Washer Pro', price:250, badges:[['tech','Gadget pick']],
+  pros:['Washes, sterilizes, dries in one cycle','No sink hookup needed','Babylist 2026 most-registered list'], cons:['Cycle takes over an hour','Big countertop footprint'],
+  links:[['Baby Brezza','https://babybrezza.com/products/bottle-washer-pro']]},
+ {id:'comotomo', name:'Comotomo Natural Feel bottle', price:22, priceNote:'2-pack, 5 oz', badges:[],
+  pros:['Squishy silicone mimics skin feel','Wide mouth cleans without brush','Favorite for bottle-refusers'], cons:['Tips over easily','Markings hard to read'],
+  links:[['Comotomo','https://comotomo.com/']]},
+ {id:'lansinoh', name:'Lansinoh Anti-Colic (NaturalWave)', price:22, priceNote:'3-pack, 8 oz', badges:[['value','Value pick']],
+  pros:['Clinically shown to cut air intake','Eases breast-bottle switching','Threads onto Lansinoh pumps'], cons:['Nipples wear faster than rivals'],
+  links:[['Lansinoh','https://lansinoh.com/products/baby-bottles-8oz']]},
+ {id:'mam', name:'MAM Easy Start Anti-Colic', price:30, priceNote:'4-pack, 9 oz', badges:[],
+  pros:['Self-sterilizes in microwave in 3 min','Base vent smooths milk flow','Flat nipple most babies accept'], cons:['Multi-piece base can leak','Hand-wash recommended'],
+  links:[['MAM','https://www.mambaby.com/en-us/p/easy-start-anti-colic-9oz-baby-bottle-4-pack-2-months/n9061-006-2-4']]},
+ {id:'nanobebe', name:'Nanobebe Flexy Silicone bottle', price:18, priceNote:'5 oz', badges:[],
+  pros:['Soft squeezable medical-grade silicone','Triple-vented anti-colic nipple','Stable base, non-collapsing nipple'], cons:['Smaller max capacity','Silicone attracts lint'],
+  links:[['Nanobebe','https://www.nanobebe.com/products/flexy-silicone-baby-bottle']]},
+ {id:'tommee', name:'Tommee Tippee Closer to Nature', price:27, priceNote:'multi-pack', badges:[],
+  pros:['Breast-shaped flexing silicone nipple','Anti-colic valve built in','Decades-long parent favorite'], cons:['Prone to nipple collapse mid-feed','Measurement marks fade'],
+  links:[['Tommee Tippee','https://www.tommeetippee.com/en-us/shop/bottle-feeding/bottles/closer-to-nature']]},
+ {id:'avent-warmer', name:'Philips Avent Fast Bottle Warmer', price:65, badges:[],
+  pros:['Warms evenly in ~3 minutes','Auto shut-off keeps milk safe','Babylist most-registered warmer'], cons:['No smart controls','Snug fit for wide bottles'],
+  links:[['Philips Avent','https://www.usa.philips.com/c-p/SCF358_00/avent-fast-bottle-warmer']]}
 ],
 glider: [
- {id:'davinci', name:'DaVinci Olive glider + ottoman', price:500, badges:[['rev','Reviews pick']],
-  why:'GREENGUARD Gold, water-repellent upholstery, smooth quiet glide — the mid-price consensus for the 3am chair.',
-  links:[['DaVinci','https://www.davincibaby.com/']]},
- {id:'delta', name:'Delta Children upholstered glider', price:260, badges:[['value','Value pick']],
-  why:'Does the one job — quiet glide, decent lumbar — at half the price. Put the savings into the mattress.',
-  links:[['Target','https://www.target.com/s?searchTerm=delta+children+glider']]},
- {id:'kiwi', name:'Babyletto Kiwi power recliner', price:999, badges:[['tech','Gadget pick'],['warn','3.7★ mixed']],
-  why:'Electronic recline + USB port, one-hand operation with a baby on your chest. Reviews are mixed (3.7★/76) — try before buying.',
-  links:[['Babyletto','https://babyletto.com/']]}
+ {id:'delta', name:'Delta Emma upholstered swivel glider', price:230, badges:[['value','Value pick']],
+  pros:['Best-selling glider at big-box stores','360 swivel plus smooth glide','Tufted wingback style, low price'], cons:['Fabric pills over time','No recline'],
+  links:[['Delta Children','https://www.deltachildren.com/products/emma-tufted-glider-1']]},
+ {id:'kiwi', name:'Babyletto Kiwi power recliner', price:899, badges:[['tech','Gadget pick'],['warn','mixed reviews']],
+  pros:['Power recline with USB port','Compact swivel-glide footprint','On nearly every 2026 best-of list'], cons:['Premium price','USB-overheat recall on some early units'],
+  links:[['Babyletto','https://babyletto.com/products/kiwi-electronic-recliner-and-swivel-glider-with-usb-port']]},
+ {id:'davinci', name:'DaVinci Olive glider + ottoman', price:349, badges:[['rev','Reviews pick']],
+  pros:['Registry-favorite value swivel glider','Bonus ottoman included','Water-repellent GREENGUARD fabric'], cons:['No recline','Cushions firm out of the box'],
+  links:[['DaVinci','https://davincibaby.com/products/olive-glider-and-ottoman']]},
+ {id:'windsor', name:'Angel Line Windsor glider + ottoman', price:160, badges:[['value','Value pick']],
+  pros:["Amazon's classic budget glider",'Solid wood frame, ottoman included','Handy arm storage pockets'], cons:['Cushions flatten with use','Assembly quality varies'],
+  links:[['Angel Line','https://www.angelline.com/']]},
+ {id:'tuscany', name:'Storkcraft Tuscany glider + ottoman', price:260, badges:[],
+  pros:['Long-running registry staple','Lumbar pillow and ottoman included','Many finish and fabric combos'], cons:['Glide can squeak over time','No swivel'],
+  links:[['Storkcraft','https://www.storkcraft.com/products/storkcraft%C2%AE-tuscany-glider-and-ottoman']]},
+ {id:'hoop', name:'Storkcraft Premium Hoop glider', price:200, badges:[],
+  pros:['Top value pick under $200','Ottoman included','Easy-clean cushions'], cons:['Petite frame for larger parents','Basic styling'],
+  links:[['Storkcraft','https://www.storkcraft.com/products/storkcraft%C2%AE-hoop%E2%84%A2-glider-and-ottoman']]},
+ {id:'nurture', name:'Nurture& The Glider Plus', price:1099, priceNote:'list $1,399; frequent sales', badges:[['tech','Gadget pick']],
+  pros:['Power recline plus power lumbar','Stain-resistant non-toxic fabric','Social-media registry darling'], cons:['Four-figure price','Bulky footprint'],
+  links:[['Nurture&','https://nurtureand.com/products/the-glider-plus']]},
+ {id:'arlo', name:"Carter's by DaVinci Arlo recliner", price:599, badges:[],
+  pros:['Recline, swivel and glide combined','Water-repellent stain-resistant fabric','Frequent 2026 best-of pick'], cons:['Manual recline lever feels stiff','Wide footprint for small rooms'],
+  links:[["Carter's by DaVinci",'https://davincibaby.com/products/arlo-recliner-and-swivel-glider-water-repellent-stain-resistant-fabric']]},
+ {id:'naomi', name:'Naomi Home Brisbane glider', price:171, badges:[],
+  pros:['Budget Amazon favorite with ottoman','Roomy seat, smooth glide','Multiple color options'], cons:['Cushion durability complaints','Fiddly assembly'],
+  links:[['Naomi Home','https://naomihome.com/product/brisbane-glider-and-ottoman-set-by-naomi-home/']]},
+ {id:'graco-glider', name:'Graco Teddi power recliner glider', price:800, priceNote:'often discounted at Walmart', badges:[['tech','Gadget pick']],
+  pros:['Power recline with USB charging','Swivel, glide and recline in one','Trusted Graco nursery name'], cons:['High list price','Heavy to reposition'],
+  links:[['Graco / Storkcraft','https://www.storkcraft.com/products/graco%C2%AE-teddi%C2%AE-power-recliner']]}
 ],
 environment: [
  {id:'hatch', name:'Hatch Rest (2nd gen)', price:70, badges:[['tech','Gadget pick'],['rev','Reviews pick']],
-  why:'Sound machine + night light + toddler wake clock later, all app-controlled. The default answer for a reason.',
-  links:[['Hatch','https://www.hatch.co/']]},
- {id:'humid', name:'Levoit smart humidifier', price:90, badges:[['tech','Gadget pick']],
-  why:'Dry winter air + newborn congestion is a rough combo; app-schedulable, auto-humidity target.',
-  links:[['Levoit','https://levoit.com/']]},
- {id:'blackout', name:'Blackout curtains', price:35, badges:[['value','Value pick']],
-  why:'The highest ROI sleep purchase in the room. Any brand; go darker than you think.',
-  links:[['Target','https://www.target.com/s?searchTerm=blackout+curtains+nursery']]},
- {id:'sleepsacks', name:'Swaddles + sleep sacks (starter set)', price:80, badges:[['rev','Reviews pick']],
-  why:'Halo SleepSack swaddles (velcro > blankets at 3am), then zip sacks once rolling starts. 3–4 of each size.',
-  links:[['Halo','https://halosleep.com/']]}
+  pros:['#1 most-registered sleep item on Babylist','Sound + night light + time-to-rise','App scheduling from another room'], cons:['Best features need Hatch+ sub','Needs Wi-Fi for full control'],
+  links:[['Hatch','https://www.hatch.co/rest-second-gen']]},
+ {id:'sleepsacks', name:'HALO SleepSack Swaddle (cotton)', price:30, badges:[['rev','Reviews pick']],
+  pros:["Hospitals' swaddle of choice nationwide",'3-way wrap adjusts arms in/out','Inverted zipper for night changes'], cons:['Outgrown once rolling starts','Velcro loud at night'],
+  links:[['HALO','https://www.halosleep.com/products/halo-sleepsack-swaddle-100-cotton-cream-swad-cot-crm']]},
+ {id:'yogasleep', name:'Yogasleep Dohm Classic', price:50, badges:[],
+  pros:['The original fan-based white noise','Real moving air, no looping tracks','Twist to tune tone and volume'], cons:['No timer or app','Single sound only'],
+  links:[['Yogasleep','https://yogasleep.com/products/dohmclassic']]},
+ {id:'lovetodream', name:'Love to Dream Swaddle Up', price:35, badges:[],
+  pros:['Arms-up position babies self-soothe in','Zips on in seconds, no wrapping','Sleep-consultant cult following'], cons:["Sized — you'll buy multiples",'Too warm for hot rooms in 1.0 TOG'],
+  links:[['Love to Dream','https://lovetodream.com/collections/swaddle-up']]},
+ {id:'blackout', name:'NICETOWN 100% blackout curtains', price:30, priceNote:'per 2-panel pair', badges:[['value','Value pick']],
+  pros:['110k+ Amazon reviews, best-seller','Triple-weave truly blocks light','Thermal insulation bonus'], cons:['Polyester look is basic','Needs wide coverage to seal edges'],
+  links:[['NICETOWN','https://nicetown.com/products/blackout-grommet-bedroom-curtains-2-panels']]},
+ {id:'humid', name:'Levoit Classic 300S smart humidifier', price:70, badges:[['tech','Gadget pick']],
+  pros:['Top-fill 6L tank, 60-hr runtime','App + auto humidity targeting','Most-reviewed humidifier line on Amazon'], cons:['Needs regular descaling','Night light is dim'],
+  links:[['Levoit','https://levoit.com/products/classic-300s-smart-ultrasonic-top-fill-cool-mist-humidifier']]},
+ {id:'frida-humid', name:'Frida Baby 3-in-1 humidifier', price:45, badges:[],
+  pros:['Humidifier + diffuser + nightlight','60-hour run time','Babylist and BabyCenter recommended'], cons:['Small 1.9L tank','No humidistat'],
+  links:[['Frida','https://frida.com/products/frida-baby-3-in-1-humidifier']]},
+ {id:'slumberpod', name:'SlumberPod 3.0', price:200, badges:[],
+  pros:['Blacks out 99% of light anywhere','Room-sharing and travel-sleep fix','Fits playards and mini cribs'], cons:['Expensive for a tent','Bulky to pack'],
+  links:[['SlumberPod','https://www.slumberpod.com/products/slumberpod-3-0']]},
+ {id:'kyte', name:'Kyte Baby sleep bag (1.0 TOG)', price:55, badges:[],
+  pros:['Buttery bamboo rayon parents rave about','Double zipper for diaper changes','TOG options for every season'], cons:['Premium price per sack','Bamboo needs gentle wash'],
+  links:[['Kyte Baby','https://kytebaby.com/products/sleep-bag-in-cloud-1-0']]},
+ {id:'hatch-go', name:'Hatch Go portable sound machine', price:40, badges:[],
+  pros:["Babylist's 2026 most-registered list",'10 sounds, clips anywhere','Pairs with home Hatch routine'], cons:['No night-light scheduling','Modest battery when loud'],
+  links:[['Hatch','https://www.hatch.co/rest-go']]}
 ],
 carry: [
- {id:'ergo', name:'Ergobaby Omni Breeze', price:200, badges:[['rev','Reviews pick']],
-  why:'The consensus all-position carrier, newborn to toddler, breathable mesh — no infant insert needed.',
-  links:[['Ergobaby','https://ergobaby.com/']]},
- {id:'bjorn', name:'BabyBjörn Baby Carrier Mini', price:120, badges:[['value','Value pick']],
-  why:'4.7★ (648) — the simple newborn-months carrier that takes 10 seconds to put on. Many households run Mini now + Ergo later.',
-  links:[['BabyBjörn','https://www.babybjorn.com/']]},
- {id:'wildbird', name:'WildBird ring sling', price:228, badges:[['warn','style pick']],
-  why:'4.8★ (1.6k) — the stylish sling for around-the-house contact naps. A complement, not a replacement.',
-  links:[['WildBird','https://wildbird.co/']]},
- {id:'bag', name:'Diaper bag backpack', price:85, badges:[['value','Value pick']],
-  why:'Skip Hop or Ruvalino backpack style — both hands free, wipeable lining, stroller clips that hook your platform\'s handlebar.',
-  links:[['Skip Hop','https://www.skiphop.com/']]}
+ {id:'ergo', name:'Ergobaby Omni Breeze', price:199, badges:[['rev','Reviews pick']],
+  pros:['Top overall carrier across 2026 lists','SoftFlex mesh keeps everyone cool','4 positions, newborn to 45 lbs'], cons:['Many buckles to learn','Bulky to stash in a bag'],
+  links:[['Ergobaby','https://ergobaby.com/baby-carrier/omni/the-omni-breeze-baby-carrier']]},
+ {id:'bjorn', name:'BabyBjörn Baby Carrier Mini', price:100, priceNote:'$120 in 3D Mesh', badges:[['value','Value pick']],
+  pros:['Babylist most-registered carrier 2026','Easiest newborn-stage carrier to use','Unclips fully to move sleeping baby'], cons:['Outgrown around 11–12 months','No waist belt for weight transfer'],
+  links:[['BabyBjörn','https://www.babybjorn.com/products/baby-carriers/baby-carrier-mini/']]},
+ {id:'bag', name:'Skip Hop Forma backpack diaper bag', price:79, badges:[['value','Value pick']],
+  pros:['Babylist most-registered diaper backpack','Lightweight, packing cubes included','Insulated pockets, stroller straps'], cons:['Quilted fabric shows dirt','No luggage sleeve'],
+  links:[['Skip Hop','https://www.skiphop.com/skiphop-diaper-bags/V_203100.html']]},
+ {id:'tushbaby', name:'Tushbaby hip seat carrier', price:75, badges:[],
+  pros:['Saves arms for toddler up-downs','Storage pockets replace small bag','Viral favorite, huge Amazon volume'], cons:['Not hands-free','Belt bulky under coats'],
+  links:[['Tushbaby','https://tushbaby.com/products/tushbaby']]},
+ {id:'infantino', name:'Infantino Flip 4-in-1', price:35, badges:[['value','Value pick']],
+  pros:["Amazon's best-selling structured carrier",'4 carry positions, 8–32 lbs','Unbeatable price'], cons:['Less padding than premium carriers','Basic newborn head support'],
+  links:[['Infantino','https://infantino.com/products/flip-4-in-1-convertible-carrier']]},
+ {id:'solly', name:'Solly Baby Wrap', price:74, badges:[],
+  pros:['Buttery TENCEL fabric, newborn favorite','Hip-healthy certified','Packs down to nothing'], cons:['Wrapping has a learning curve','Only to ~25 lbs, no back carry'],
+  links:[['Solly Baby','https://sollybaby.com/products/wrap-carrier-black']]},
+ {id:'wildbird', name:'WildBird ring sling', price:72, badges:[['warn','style pick']],
+  pros:['Most-recommended ring sling brand','On and off in seconds','Gorgeous linen colorways'], cons:['One-shoulder load fatigues','Technique needed for positioning'],
+  links:[['WildBird','https://wildbird.co/collections/slings']]},
+ {id:'artipoppe', name:'Artipoppe Zeitgeist carrier', price:420, priceNote:'cashmere/silk editions $600+', badges:[['warn','luxury']],
+  pros:['The luxury status carrier','Structured comfort, 7–45 lbs','Designer prints hold resale value'], cons:['Very expensive','Hand-wash care'],
+  links:[['Artipoppe','https://shop.artipoppe.com/us/baby-carrier/']]},
+ {id:'freshly', name:'Freshly Picked Classic diaper bag II', price:199, priceNote:'often on sale ~$99', badges:[],
+  pros:['Stylish vegan leather, 10 pockets','Doubles as everyday backpack','Strong style following'], cons:['Heavier than nylon bags','Vegan leather scuffs'],
+  links:[['Freshly Picked','https://freshlypicked.com/collections/classic-diaper-bag-ii']]},
+ {id:'lalabu', name:'Lalabu Dad Shirt', price:90, badges:[],
+  pros:['Zero-learning-curve babywearing shirt','Skin-to-skin kangaroo pouch','Popular new-dad gift'], cons:['Newborn stage only (to ~15 lbs)','Sized to the wearer, not shareable'],
+  links:[['Lalabu','https://shop.lalabu.com/products/dad-shirt-black']]}
 ]
 };
 /* Official product photos, hot-linked from each brand's own servers (og:image/social-preview
@@ -379,16 +575,68 @@ lansinoh:"https://cdn.shopify.com/s/files/1/0054/1989/2808/files/BT71054CT02263x
 brezza:"https://cdn.shopify.com/s/files/1/1465/2384/files/FRP0046_FPA_CAR_Template_DTC_01.webp?v=1758552353",
 sterilizer:"https://cdn.shopify.com/s/files/1/1465/2384/files/BRZ0103_BWP_CAR_CAR_Template_DTC_01.webp?v=1758553907",
 davinci:"https://cdn.shopify.com/s/files/1/1151/8536/files/M11687CM-1_M11687CM_angle.jpg?v=1789262209",
-delta:"https://cdn.shopify.com/s/files/1/0522/6912/1736/products/wpjhdfoo16atavni1dxi.jpg?v=1622671585",
+hellobaby:"https://www.hellobaby-monitor.com/cdn/shop/files/HB6550_HelloBaby_5__Baby_Monitor_with_Camera.jpg?v=1776309569",
+duo:"https://owletcare.com/cdn/shop/files/US_DreamDuo_1_Mint_2.png?v=1757533309",
+"momcozy-bm":"https://momcozy.com/cdn/shop/files/bm01.png?v=1776233779",
+babysense:"https://www.babysensemonitors.com/cdn/shop/files/babysense-hd-s2-video-baby-monitor-with-2-cameras-non-wifi-split-screen-night-light-machine-380645.jpg?v=1751038466",
+motorola:"https://motorolanursery.com/media/3ddp4gxd/pip1510-connect_p01.jpg",
+"graco-crib":"https://www.storkcraft.com/cdn/shop/files/04530-211_MAIN.jpg?v=1769677252",
+kalani:"https://davincibaby.com/cdn/shop/files/M5501CT-1_M5501CT_angle.jpg?v=1789263773",
+"delta-crib":"https://www.deltachildren.com/cdn/shop/files/yu9zavhypfouxspxtxlf.jpg?v=1737250410",
+dreamonme:"https://www.dreamonme.com/wp-content/uploads/657_N_RS_Collage-1200x1200.jpg",
+lolly:"https://babyletto.com/cdn/shop/files/M9001WN-1_M9001WN_crib-front-1.1.jpg?v=1789262746",
+storkcraft:"https://www.storkcraft.com/cdn/shop/products/04524-G01_MAIN_1.jpg?v=1769673344",
+jennylind:"https://davincibaby.com/cdn/shop/files/M7391FRGR-1_M7391FRGR_angle.jpg?v=1789263544",
+tuscany:"https://www.storkcraft.com/cdn/shop/files/StorkcraftTuscanyGliderOttoman_EspressoBeige1.jpg?v=1769680415",
+hoop:"https://www.storkcraft.com/cdn/shop/products/stork13_set27_img01_v05_2.jpg?v=1774479370",
+nurture:"https://nurtureand.com/cdn/shop/files/Glider1.png?v=1788204676",
+arlo:"https://davincibaby.com/cdn/shop/files/F19587PFTGRY-1_F19587FTGRY_angle-reclined.jpg?v=1789262261",
+"graco-glider":"https://www.storkcraft.com/cdn/shop/files/06510-31P_MAIN_3e31b9fe-8d12-413b-b6ce-bc84149faede.jpg?v=1769678575",
 kiwi:"https://cdn.shopify.com/s/files/1/1801/7811/files/M11288PCMEW-1_M11288PCMEW_glider-angle-1.1.jpg?v=1789262579",
 hatch:"https://www.datocms-assets.com/98401/1769809446-baby-carousel-putty-1-v2.webp",
 humid:"https://cdn.shopify.com/s/files/1/0497/0273/1927/files/classic-300s-ultrasonic-smart-humidifier-398749.jpg?v=1762284270",
-blackout:"https://target.scene7.com/is/image/Target/GUEST_24d97bcf-8720-4d07-be62-7a979df67fc2?wid=600&hei=600&fmt=pjpeg",
 sleepsacks:"https://cdn.shopify.com/s/files/1/0708/2259/2731/files/sleepsack-swaddle-cotton-cream_1467_289_1597_Q3464_Q467_2.jpg?v=1731262116",
 ergo:"https://images.ctfassets.net/50gzycvace50/4bd2581d42021775bd33b5e397ffc19cd1b4f5437355c63794c9badae9e52854/33678ef71de31d2a36d08ef171782f69/4bd2581d42021775bd33b5e397ffc19cd1b4f5437355c63794c9badae9e52854.png",
 bjorn:"https://a.storyblok.com/f/187315/1800x2699/f810686553/021087-baby-carrier-mini-light-beige-3d-jersey-product-up-1.png",
 wildbird:"https://cdn.shopify.com/s/files/1/3040/7690/files/1.sparrow-sling-1.jpg?v=1764002587",
-bag:"https://dw.cartersstorefront.com/dw/image/v2/AAMK_PRD/on/demandware.static/-/Sites-carters_master_catalog/default/dw805aab46/productimages/203100.jpg?sw=470"
+bag:"https://dw.cartersstorefront.com/dw/image/v2/AAMK_PRD/on/demandware.static/-/Sites-carters_master_catalog/default/dw805aab46/productimages/203100.jpg?sw=470",
+"momcozy-m5":"https://momcozy.com/cdn/shop/files/1_b8f691a7-6acf-44dc-acbc-ed6bf82e8a9d.jpg?v=1760428066&width=1200",
+"willow-go":"https://onewillow.com/cdn/shop/files/TargetPDP_WillowGo_01.jpg?v=1782840882&width=1200",
+"medela-freestyle":"https://medela.com/010-products/010-pumps/010-hands-free-electric/010-freestyle-hands-free/product-images/7141/image-thumb__7141__product-image-carousel/us-freestyle-hands-free-no-tube-1.2.70ddfb63.jpg",
+"spectra-s2":"https://www.spectrababyusa.com/cdn/shop/files/S2PlusMainImage.png?v=1735944141&width=1000",
+"momcozy-m9":"https://momcozy.com/cdn/shop/files/MOMCOZY_M9_BREAST_PUMP_5.png?v=1746686042&width=1200",
+"eufy-s1":"https://cdn.shopify.com/s/files/1/0504/7094/4954/files/2e5838e978c539a89958f42a59e3a0db_0c6b65fa-0fe2-4c1e-b982-0e9d912adeee.png?v=1788417289&width=1920",
+avent:"https://images.philips.com/is/image/philipsconsumer/546be8376f4b40839094acaa00295575?$png$&wid=410&hei=410&fit=constrain",
+mam:"https://cdn.mambaby.com/LrXNBZj2PRud7dP62p5uR00SNP5PAoMfM83CLnO0Pfs/rs%3Afit%3A3000%3A%3A/gravity%3Asm/aHR0cHM6Ly93d3cubWFtYmFieS5jb20vbWVkaWEvOGEvOGQvMDYvMTcxODYxMDMyNC9OOTA2MS0wMDYtMi00LmpwZw",
+nanobebe:"https://www.nanobebe.com/cdn/shop/files/Flexy_5oz_Hero_Image_1.jpg?v=1745837087&width=2000",
+"avent-warmer":"https://images.philips.com/is/image/philipsconsumer/d5a98e72b93d4a4793c0ac5800a2195b?$png$&wid=410&hei=410&fit=constrain",
+yogasleep:"https://yogasleep.com/cdn/shop/files/DohmClassicWhite_ISO_2028_001.jpg?v=1729193887&width=1080",
+lovetodream:"https://lovetodream.com/cdn/shop/files/L10_09_001_DOL_L1_RGB_HR.jpg?v=1777512703&width=1000",
+"frida-humid":"https://frida.com/cdn/shop/files/3-in-1_Humi_2.0_White_Frame_1_1_1_200x.jpg?v=1769103789",
+slumberpod:"https://www.slumberpod.com/cdn/shop/files/NewPDPDTC-02-min_e44c21a9-6758-4b48-b912-b3bfac9a1751.png?v=1742935674&width=1200",
+kyte:"https://kytebaby.com/cdn/shop/files/Cloud_1.0SleepBag_01.jpg?v=1778107486&width=2000",
+"hatch-go":"https://www.datocms-assets.com/98401/1769724734-go-carousel-mint-1-v2.webp",
+tushbaby:"https://tushbaby.com/cdn/shop/files/1_3_c246bf0c-161c-4cd8-8009-6784f0fdeac8.jpg?v=1768512196&width=1200",
+infantino:"https://infantino.com/cdn/shop/products/200-183J_P1_a19c417e-b63c-4277-8be9-2c69097a3db9_1024x1024.jpg?v=1656690447",
+solly:"https://sollybaby.com/cdn/shop/files/web_black_wrap_1.jpg?v=1745008463&width=1200",
+artipoppe:"https://shop.artipoppe.com/us/32711/zeitgeist-baby-leopard-classic.jpg",
+freshly:"https://freshlypicked.com/cdn/shop/files/ClassicDBVII_Butterscotch_1.jpg?v=1775420375&width=2000",
+lalabu:"https://shop.lalabu.com/cdn/shop/files/IMG_0788.jpg?v=1762015106&width=1536",
+pramette:"https://s7d1.scene7.com/is/image/NewellBrands/2173541_atf_01?wid=1000&hei=1000",
+cruz:"https://back.uppababy.com/media/4a/1d/87/1787667674/0403-CRZ-NA-JMS_1_260730.webp",
+mixx:"https://nunababy.com/media/catalog/product/M/I/MIXXnext_Caviar_Angle_US_adb9.png?optimize=high&fit=bounds&height=600&width=600&canvas=600:600&format=jpeg",
+fox5:"https://www.bugaboo.com/on/demandware.static/-/Sites-bugaboo-master/default/dw08b9ad50/images/PV006289/Bugaboo-Fox-5-bassinet-seat-stroller-graphite-chassis-grey-melange-fabrics-grey-melange-sun-canopy-x-PV006289-01.png",
+reef:"https://silvercrossus.com/wp-content/uploads/2024/06/reef2-10-min.png",
+doona:"https://images.ctfassets.net/a5ijcxwbf06s/4Jj2bWlxxWU1qbPfRedvJI/f27c7de5baef51e9fe58dba973b4a401/discover-doona.jpg",
+snugride:"https://s7d1.scene7.com/is/image/NewellBrands/2156211_atf1?wid=1000&hei=1000",
+willow:"https://cdne1britaxus.azureedge.net/bri/uploads/_1200x630_crop_center-center_82_none/Vehicle_Interaction_Infant2_63-72RGB.jpg?mtime=1727898858",
+litemax:"https://www.evenflo.com/cdn/shop/files/9e0ae5a3ebf89d915299ea87ebfab0a884818542.jpg?v=1783003607",
+liing:"https://clekinc.com/cdn/shop/files/clek-liing-railroad-ziip.jpg?crop=center&height=1200&v=1708873087&width=1200",
+mika:"https://mikamickybassinet.com/wp-content/uploads/2026/06/Mika-Micky-Bedside-Sleeper-Bassinet-1.webp",
+iora:"https://maxicosi.com/cdn/shop/files/c7qroxxfsgj20rze3l2g_3d31752e-b261-4a05-af63-e137e5c6143f.png?crop=center&height=1200&v=1773969035&width=1200",
+whisper:"https://www.deltachildren.com/cdn/shop/products/25508-2356_GAP_BedsideBassinet_Pink_Lifestyle_01.jpg?v=1667318602",
+lullago:"https://www.chiccousa.com/on/demandware.static/-/Sites-chicco_catalog/default/dw4a99627c/images/products/Gear/lullago/Chicco-LullaGo-Anywhere-Bassinet-Lyric.jpg",
+"bjorn-cradle":"https://a.storyblok.com/f/187315/1800x2701/198c9a94e0/041121-cradle-white-lifestyle-babybjorn-18-large-copy.jpg"
 };
 const ICONS={
 stroller:'<circle cx="30" cy="78" r="10"/><circle cx="72" cy="78" r="10"/><path d="M20 30 Q20 58 44 58 L64 58 L64 34 Q64 26 56 26 L38 26"/><path d="M64 34 L84 14"/><path d="M30 68 L38 58 M72 68 L64 58"/>',
@@ -406,7 +654,7 @@ const CATS = [
  ['seat','02','Infant car seat','filtered by your stroller · buy new only', false],
  ['bassinet','03','Bedside bassinet','months 0–5 · independent of platform', false],
  ['monitor','04','Monitor','', false],
- ['crib','05','Crib + mattress','moves in at ~4–6 months', false],
+ ['crib','05','Crib','moves in at ~4–6 months · mattress separate — Newton (~$250) is the common pairing', false],
  ['pump','06','Breast pump','multi-select — these stack', true],
  ['feeding','07','Bottles & feeding','multi-select — these stack', true],
  ['glider','08','Glider','the 3am chair', false],
@@ -429,15 +677,19 @@ const seatOK=st=>seat=>st? (st.adapters.includes(seat.brand)) : true;
 
 function save(){ try{localStorage.setItem('bgb-build',JSON.stringify(state));}catch(e){} }
 
-function optCard(cat,o,multi){
+function optCard(cat,o,multi,idx){
   const st=stroller();
   let dis=false, compat='';
   if(cat==='seat'){
-    const ok=st && st.adapters.includes(o.brand);
-    dis=!ok;
-    compat = ok
-      ? `<span class="compat ok">✓ clicks into ${st.name.split(' ').slice(0,2).join(' ')} — ${st.adapterCost? 'adapter ~'+fmt(st.adapterCost) : st.adapterNote}</span>`
-      : `<span class="compat no">✗ no adapter for ${st?st.name.split(' ').slice(0,2).join(' '):'this stroller'} — carried separately forever</span>`;
+    if(o.brand==='doona'){
+      compat = `<span class="compat no">△ is its own stroller — never clicks into another platform</span>`;
+    } else {
+      const ok=st && st.adapters.includes(o.brand);
+      dis=!ok;
+      compat = ok
+        ? `<span class="compat ok">✓ clicks into ${st.name.split(' ').slice(0,2).join(' ')} — ${st.adapterCost? 'adapter ~'+fmt(st.adapterCost) : st.adapterNote}</span>`
+        : `<span class="compat no">✗ no adapter for ${st?st.name.split(' ').slice(0,2).join(' '):'this stroller'} — carried separately forever</span>`;
+    }
   }
   const selected = multi? state[cat].includes(o.id) : state[cat]===o.id;
   const badges=o.badges.map(b=>`<span class="b ${b[0]}">${b[1]}</span>`).join('');
@@ -446,7 +698,11 @@ function optCard(cat,o,multi){
   const tint = curColor ? curColor[1]+'2E' : '';
   const ph = PHOTOS[o.id];
   const brandHost = (()=>{ try{return new URL(o.links[0][1]).hostname.replace('www.','');}catch(e){return '';} })();
-  const pic = `<div class="pic" ${tint?`style="--tint:${tint}"`:''}><svg aria-hidden="true" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${ICONS[cat]||''}</svg>${ph?`<img src="${ph}" alt="${o.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.nextElementSibling&&this.nextElementSibling.remove();this.remove()"><span class="credit">photo: ${brandHost}</span>`:''}</div>`;
+  const rank = (typeof idx==='number') ? `<span class="rank ${idx===0?'top':''}">#${idx+1}${idx===0?' most popular':''}</span>` : '';
+  const pic = `<div class="pic" ${tint?`style="--tint:${tint}"`:''}>${rank}<svg aria-hidden="true" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${ICONS[cat]||''}</svg>${ph?`<img src="${ph}" alt="${o.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.nextElementSibling&&this.nextElementSibling.remove();this.remove()"><span class="credit">photo: ${brandHost}</span>`:''}</div>`;
+  const pcList = (o.pros||o.cons)
+    ? `<ul class="pc">${(o.pros||[]).map(p=>`<li><span class="g">✓</span><span>${p}</span></li>`).join('')}${(o.cons||[]).map(c=>`<li><span class="x">✗</span><span>${c}</span></li>`).join('')}</ul>`
+    : `<p>${o.why||''}</p>`;
   const vq=encodeURIComponent(o.name.replace(/\(.*?\)/g,'').trim()+' official video');
   const media=`<div class="media">
     <a href="${o.links[0][1]}" target="_blank" rel="noopener" aria-label="Official photos of ${o.name}">📷 Official photos</a>
@@ -464,7 +720,7 @@ function optCard(cat,o,multi){
     <div class="top"><h3>${o.name}</h3><span class="price">${o.priceNote||fmt(o.price)}</span></div>
     <div class="badges">${badges}</div>
     ${compat}
-    <p>${o.why}</p>
+    ${pcList}
     ${swatches}
     ${media}
     <div class="linkrow">${links}</div>
@@ -498,8 +754,8 @@ function renderSection(cat,n,title,hint,multi){
       <span><strong>Add the ${st.bassinet.name}</strong> — ${inc?'included with this stroller':'flat overnight-nap surface for walks (~'+fmt(st.bassinet.price)+'); the bedroom bassinet (step 03) is still separate'}</span></label>`;
     }
   }
-  el.innerHTML=`<div class="sec-head"><span class="n">${n}</span><h2>${title}</h2><span class="hint">${hint}</span></div>
-  <div class="opts">${DATA[cat].map(o=>optCard(cat,o,multi)).join('')}</div>${extra}
+  el.innerHTML=`<div class="sec-head"><span class="n">${n}</span><h2>${title}</h2><span class="hint">${hint}${hint?' · ':''}ranked most → least popular</span></div>
+  <div class="opts">${DATA[cat].map((o,i)=>optCard(cat,o,multi,i)).join('')}</div>${extra}
   <div class="navbtns">
     <button id="backbtn" ${step===0?'disabled':''}>← Back</button>
     <button class="next" id="nextbtn">${step===CATS.length-1?'Review build ↓':'Next: '+CATS[Math.min(step+1,CATS.length-1)][2].split('—')[0].trim()+' →'}</button>
@@ -523,8 +779,9 @@ function computeBuild(){
     const ok=st&&st.adapters.includes(seat.brand);
     push('Car seat', seat.name+(state.colors.seat?' · '+state.colors.seat:''), seat.price);
     if(ok&&st.adapterCost) push('Adapter', st.name.split(' ')[0]+' adapter', st.adapterCost);
-    if(state.twocar) push('2nd base', seat.name.split(' ')[0]+' base — car #2', seat.base2);
-    checks.push(ok? {ok:1,t:`✓ ${seat.name.split(' ').slice(0,3).join(' ')} clicks into the ${st.name.split(' ').slice(0,2).join(' ')}`}
+    if(state.twocar&&seat.base2) push('2nd base', seat.name.split(' ')[0]+' base — car #2', seat.base2);
+    if(seat.brand==='doona') checks.push({ok:0,t:'△ Doona is its own stroller — it rides separately from your platform'});
+    else checks.push(ok? {ok:1,t:`✓ ${seat.name.split(' ').slice(0,3).join(' ')} clicks into the ${st.name.split(' ').slice(0,2).join(' ')}`}
                   : {ok:0,t:`✗ ${seat.name} will NOT attach to the ${st?st.name:'stroller'} — pick a compatible pair`});
   }
   const bas=DATA.bassinet.find(b=>b.id===state.bassinet);
@@ -535,7 +792,7 @@ function computeBuild(){
     if(mon.id==='nanit') checks.push({ok:0,t:'△ Nanit analytics need a $10–15/mo subscription'});
   }
   const crib=DATA.crib.find(c=>c.id===state.crib);
-  if(crib) push('Crib + mattress', crib.name, crib.price);
+  if(crib) push('Crib', crib.name, crib.price, crib.priceNote?fmt(crib.price)+' + mattress':undefined);
   state.pump.forEach(id=>{const p=DATA.pump.find(x=>x.id===id); if(p) push('Pump', p.name, p.price, p.priceNote);});
   state.feeding.forEach(id=>{const p=DATA.feeding.find(x=>x.id===id); if(p) push('Feeding', p.name, p.price, p.priceNote);});
   const gl=DATA.glider.find(g=>g.id===state.glider);
@@ -586,7 +843,7 @@ document.addEventListener('click',e=>{
     else{ state[cat]=id;
       if(DATA[cat].find(o=>o.id===id).colors && !state.colors[cat]) state.colors[cat]=DATA[cat].find(o=>o.id===id).colors[0][0];
       if(cat==='stroller'){ const seat=DATA.seat.find(s=>s.id===state.seat);
-        if(seat && !DATA.stroller.find(s=>s.id===id).adapters.includes(seat.brand)){
+        if(seat && seat.brand!=='doona' && !DATA.stroller.find(s=>s.id===id).adapters.includes(seat.brand)){
           const first=DATA.seat.find(seatOK(DATA.stroller.find(s=>s.id===id)));
           if(first){ state.seat=first.id; state.colors.seat=first.colors?first.colors[0][0]:undefined; }
         } }
